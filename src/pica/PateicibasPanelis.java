@@ -12,7 +12,12 @@ import javax.swing.SwingConstants;
 
 public class PateicibasPanelis extends JPanel {
 
-    public PateicibasPanelis() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public PateicibasPanelis() {
         setOpaque(false);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

@@ -27,7 +27,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 class GradientPanel extends JPanel {
-    private Color c1;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Color c1;
     private Color c2;
 
     public GradientPanel(Color c1, Color c2) {
@@ -55,7 +59,12 @@ class GradientPanel extends JPanel {
 
 class GradientButton extends JButton {
 
-    public GradientButton(String text) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public GradientButton(String text) {
         super(text);
         setFocusPainted(false);
         setContentAreaFilled(false);
@@ -93,7 +102,11 @@ public class PicasEka extends JPanel {
 	
 	
 
-    // CardLayout priekš centra
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	// CardLayout priekš centra
     private CardLayout cardLayout;
     private JPanel centerPanel;
 
@@ -154,11 +167,11 @@ public class PicasEka extends JPanel {
         centerPanel.add(new SpelesIzvele(), "speluizvele");
 
         // TAGAD drīkst listenerus
-        pateicibas.addActionListener(e ->
+        pateicibas.addActionListener(_ ->
             cardLayout.show(centerPanel, "pateicības")
         );
 
-        speluOpc.addActionListener(e ->
+        speluOpc.addActionListener(_ ->
             cardLayout.show(centerPanel, "speluizvele")
         );
 
