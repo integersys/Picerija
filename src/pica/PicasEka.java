@@ -4,7 +4,72 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
+class GradientPanel extends JPanel {
+    private Color c1;
+    private Color c2;
+
+    public GradientPanel(Color c1, Color c2) {
+        this.c1 = c1;
+        this.c2 = c2;
+        setOpaque(false);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                            RenderingHints.VALUE_ANTIALIAS_ON);
+
+        GradientPaint gp = new GradientPaint(
+                0, 0, c1,
+                0, getHeight(), c2
+        );
+
+        g2.setPaint(gp);
+        g2.fillRect(0, 0, getWidth(), getHeight());
+        super.paintComponent(g);
+    }
+}
+
+class GradientButton extends JButton {
+
+    public GradientButton(String text) {
+        super(text);
+        setFocusPainted(false);
+        setContentAreaFilled(false);
+        setBorderPainted(false);
+        setForeground(Color.WHITE);
+        setFont(new Font("Segoe UI", Font.BOLD, 14));
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
+        setPreferredSize(new Dimension(160, 45));
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                            RenderingHints.VALUE_ANTIALIAS_ON);
+
+        Color start = new Color(128, 90, 213);
+        Color end   = new Color(70, 130, 255);
+
+        if (getModel().isRollover()) {
+            start = start.brighter();
+            end = end.brighter();
+        }
+
+        GradientPaint gp = new GradientPaint(0, 0, start, getWidth(), getHeight(), end);
+        g2.setPaint(gp);
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 25, 25);
+
+        super.paintComponent(g);
+    }
+}
+
+
 public class PicasEka extends JPanel {
+	
+	
 
     // CardLayout priekš centra
     private CardLayout cardLayout;
@@ -17,15 +82,29 @@ public class PicasEka extends JPanel {
         setLayout(new BorderLayout());
 
         // ================= KREISAIS PANELIS (POGAS) =================
-        JPanel leftPanel = new JPanel(new GridLayout(2, 1, 5, 5));
+        GradientPanel leftPanel = new GradientPanel(
+                new Color(48, 35, 174),
+                new Color(83, 109, 254)
+        );
 
-        JButton viena1 = new JButton("viena1");
-        JButton future = new JButton("thiswilldosomethinginthefuture");
+        leftPanel.setLayout(new GridBagLayout());
 
-        leftPanel.add(viena1);
-        leftPanel.add(future);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.gridx = 0;
+
+        GradientButton viena1 = new GradientButton("Izveidot picu");
+        GradientButton future = new GradientButton("Nākotnē");
+
+        gbc.gridy = 0;
+        leftPanel.add(viena1, gbc);
+
+        gbc.gridy = 1;
+        leftPanel.add(future, gbc);
 
         add(leftPanel, BorderLayout.WEST);
+
+
 
         // ================= CENTRA PANELIS =================
         cardLayout = new CardLayout();
@@ -34,10 +113,19 @@ public class PicasEka extends JPanel {
         // Sākuma panelis
         centerPanel.add(createHomePanel(), "HOME");
 
-        // Picas veidošanas panelis
-        centerPanel.add(createPizzaPanel(), "PIZZA");
 
-        add(centerPanel, BorderLayout.CENTER);
+
+        GradientPanel centerBackground = new GradientPanel(
+                new Color(99, 102, 241),
+                new Color(59, 130, 246)
+        );
+
+        centerBackground.setLayout(new BorderLayout());
+        centerBackground.add(centerPanel, BorderLayout.CENTER);
+
+        add(centerBackground, BorderLayout.CENTER);
+
+
 
         // ================= ACTION LISTENERS =================
         viena1.addActionListener(e -> cardLayout.show(centerPanel, "PIZZA"));
@@ -48,76 +136,19 @@ public class PicasEka extends JPanel {
         JPanel panel = new JPanel(new BorderLayout());
         JLabel label = new JLabel("Picerija", SwingConstants.CENTER);
         label.setFont(new Font("Arial", Font.BOLD, 30));
+        
+        panel.setOpaque(false);
+        label.setForeground(Color.WHITE);
+
+        
         panel.add(label, BorderLayout.CENTER);
         return panel;
     }
-
-    // ================= PICAS VEIDOŠANA =================
-    private JPanel createPizzaPanel() {
-        JPanel panel = new JPanel(new GridLayout(7, 2, 5, 5));
-
-        JTextField vards = new JTextField();
-        JTextField adrese = new JTextField();
-        JTextField talrunis = new JTextField();
-
-        JComboBox<Integer> izmers = new JComboBox<>(new Integer[]{10, 15, 20});
-        JComboBox<String> piedeva = new JComboBox<>(new String[]{"Sēnes", "Pepperoni", "Ananāss"});
-
-        JCheckBox uzVietas = new JCheckBox("Uz vietas");
-
-        JButton izveidot = new JButton("Izveidot pasūtījumu");
-
-        panel.add(new JLabel("Vārds:"));
-        panel.add(vards);
-
-        panel.add(new JLabel("Adrese:"));
-        panel.add(adrese);
-
-        panel.add(new JLabel("Talrunis:"));
-        panel.add(talrunis);
-
-        panel.add(new JLabel("Picas izmērs:"));
-        panel.add(izmers);
-
-        panel.add(new JLabel("Piedevas:"));
-        panel.add(piedeva);
-
-        panel.add(uzVietas);
-        panel.add(new JLabel());
-
-        panel.add(izveidot);
+        
+        
 
         // ================= POGA =================
-        izveidot.addActionListener(e -> {
-            int picasIzmers = (int) izmers.getSelectedItem();
-            String picasPiedeva = (String) piedeva.getSelectedItem();
-            boolean uzVietasBool = uzVietas.isSelected();
-
-            double cena = picasCena(picasIzmers, uzVietasBool, picasPiedeva);
-            int id = pasutijumi.size() + 1;
-
-            pasutitajs p = new pasutitajs(
-                    picasIzmers,
-                    id,
-                    cena,
-                    uzVietasBool,
-                    vards.getText(),
-                    adrese.getText(),
-                    talrunis.getText(),
-                    picasPiedeva,
-                    picasPiedeva + " Pica (" + picasIzmers + ")"
-            );
-
-            pasutijumi.add(p);
-
-            JOptionPane.showMessageDialog(this,
-                    "Pasūtījums izveidots!\n\n" + p,
-                    "OK",
-                    JOptionPane.INFORMATION_MESSAGE);
-        });
-
-        return panel;
-    }
+       
 
     // ================= CENAS APRĒĶINS =================
     private double picasCena(int izmers, boolean uzVietas, String piedeva) {
@@ -145,4 +176,32 @@ public class PicasEka extends JPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    
+    class GradientPanel extends JPanel {
+        private Color c1;
+        private Color c2;
+
+        public GradientPanel(Color c1, Color c2) {
+            this.c1 = c1;
+            this.c2 = c2;
+            setOpaque(false);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                                RenderingHints.VALUE_ANTIALIAS_ON);
+
+            GradientPaint gp = new GradientPaint(
+                    0, 0, c1,
+                    0, getHeight(), c2
+            );
+
+            g2.setPaint(gp);
+            g2.fillRect(0, 0, getWidth(), getHeight());
+            super.paintComponent(g);
+        }
+    }
+    
 }
