@@ -1,8 +1,30 @@
 package pica;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
-import javax.swing.*;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 class GradientPanel extends JPanel {
     private Color c1;
@@ -116,9 +138,10 @@ public class PicasEka extends JPanel {
 
 
         GradientPanel centerBackground = new GradientPanel(
-                new Color(99, 102, 241),
-                new Color(59, 130, 246)
+        		new Color(150, 160, 255),
+        		new Color(210, 220, 255)  // ļoti gaiši zils
         );
+
 
         centerBackground.setLayout(new BorderLayout());
         centerBackground.add(centerPanel, BorderLayout.CENTER);
@@ -133,17 +156,38 @@ public class PicasEka extends JPanel {
 
     // ================= SĀKUMA SKATS =================
     private JPanel createHomePanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        JLabel label = new JLabel("Picerija", SwingConstants.CENTER);
-        label.setFont(new Font("Arial", Font.BOLD, 30));
-        
+        JPanel panel = new JPanel();
         panel.setOpaque(false);
-        label.setForeground(Color.WHITE);
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        
-        panel.add(label, BorderLayout.CENTER);
+        // Title
+        JLabel titleLabel = new JLabel("Picerija", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        titleLabel.setForeground(new Color(50, 50, 50));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // center horizontally
+
+        // GIF
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource("SpinningPizza.gif"));
+        Image scaledImage = originalIcon.getImage().getScaledInstance(350, 150, Image.SCALE_DEFAULT);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JLabel gifLabel = new JLabel(scaledIcon, SwingConstants.CENTER);
+        gifLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Add some vertical space
+        panel.add(Box.createVerticalStrut(30)); // top padding
+        panel.add(titleLabel);
+        panel.add(Box.createVerticalStrut(10)); // space between text and GIF
+        panel.add(gifLabel);
+        panel.add(Box.createVerticalGlue()); // push everything up a bit
+
         return panel;
     }
+
+
+
+    
+    
+
         
         
 
