@@ -50,9 +50,9 @@ public class Sandbox extends JFrame {
             JPanel panel = new JPanel();
             panel.setLayout(new GridLayout(1, 3, 10, 10));
             
-            // Definēt bilžu izmēru (pielāgo pēc vajadzības)
-            int bildesPlat = 150;  // platums pixels
-            int bildesAugst = 150; // augstums pixels
+            // Definēt bilžu izmēru
+            int bildesPlat = 150;
+            int bildesAugst = 150;
             
             // Siera pica
             JPanel sieraPanel = new JPanel();
@@ -103,37 +103,27 @@ public class Sandbox extends JFrame {
             if (izvele >= 0 && izvele < 3) {
                 String picasNosaukums = opcijas[izvele];
                 double cena = 0;
+                String defaultBilde = "";
                 
-                // Noteikt cenu atkarībā no picas veida
+                // Noteikt cenu UN default bildi atkarībā no picas veida
                 switch(picasNosaukums) {
                     case "Siera":
                         cena = 3.50;
+                        defaultBilde = "/PizzaSprites/siers.png";
                         break;
                     case "Pepperoni":
                         cena = 4;
+                        defaultBilde = "/PizzaSprites/pepperoni.png";
                         break;
                     case "Margarita":
                         cena = 5;
+                        defaultBilde = "/PizzaSprites/margarita.png";
                         break;
                 }
                 
                 // ====== PIEDEVU IZVĒLE ======
                 JPanel piedevuPanel = new JPanel();
                 piedevuPanel.setLayout(new BoxLayout(piedevuPanel, BoxLayout.Y_AXIS));
-                
-                // Noteikt pareizo default bildi atkarībā no izvēlētās picas
-                String defaultBilde = "";
-                switch(picasNosaukums) {
-                    case "Siera":
-                        defaultBilde = "/PizzaSprites/siers.png";
-                        break;
-                    case "Pepperoni":
-                        defaultBilde = "/PizzaSprites/pepperoni.png";
-                        break;
-                    case "Margarita":
-                        defaultBilde = "/PizzaSprites/margarita.png";
-                        break;
-                }
                 
                 // Bilde virs checkboxiem - ar mērogošanu
                 ImageIcon defaultIcon = new ImageIcon(getClass().getResource(defaultBilde));
@@ -151,15 +141,61 @@ public class Sandbox extends JFrame {
                 piedevuPanel.add(ananasCheck);
                 piedevuPanel.add(ciliCheck);
                 
-                // Mainīt bildi, kad checkboxi tiek spriesti (TIKAI Margarita picai)
-                if (picasNosaukums.equals("Margarita")) {
-                    ActionListener bildesMainitajs = a -> {
-                        boolean senes = senesCheck.isSelected();
-                        boolean ananas = ananasCheck.isSelected();
-                        boolean cili = ciliCheck.isSelected();
-                        
-                        String bildesNosaukums = "/PizzaSprites/margarita.png";
-                        
+                // Izveidot final kopiju defaultBilde priekš lambda izteiksmes
+                final String finalDefaultBilde = defaultBilde;
+                
+                // Mainīt bildi atkarībā no picas veida un izvēlētajām piedevām
+                ActionListener bildesMainitajs = a -> {
+                    boolean senes = senesCheck.isSelected();
+                    boolean ananas = ananasCheck.isSelected();
+                    boolean cili = ciliCheck.isSelected();
+                    
+                    String bildesNosaukums = finalDefaultBilde; // Izmanto final kopiju
+                    
+                    // SIERA PICA
+                    if (picasNosaukums.equals("Siera")) {
+                        if (senes && ananas && cili) {
+                            bildesNosaukums = "/PizzaSpriteCheese/CheeseMushroomsPineapplesChili.png";
+                        } else if (senes && ananas) {
+                            bildesNosaukums = "/PizzaSpriteCheese/CheeseMushroomsPineapples.png";
+                        } else if (senes && cili) {
+                            bildesNosaukums = "/PizzaSpriteCheese/CheeseMushroomsChili.png";
+                        } else if (ananas && cili) {
+                            bildesNosaukums = "/PizzaSpriteCheese/CheesePineappleChilli.png";
+                        } else if (senes) {
+                            bildesNosaukums = "/PizzaSpriteCheese/CheeseMushrooms.png";
+                        } else if (ananas) {
+                            bildesNosaukums = "/PizzaSpriteCheese/CheesePineapple.png";
+                        } else if (cili) {
+                            bildesNosaukums = "/PizzaSpriteCheese/CheeseChill.png";
+                        } else {
+                            bildesNosaukums = "/PizzaSprites/siers.png";
+                        }
+                    }
+                    
+                    // PEPPERONI PICA
+                    else if (picasNosaukums.equals("Pepperoni")) {
+                        if (senes && ananas && cili) {
+                            bildesNosaukums = "/PizzaSpritePepperoni/PepperoniMushroomsPineapplesChill.png";
+                        } else if (senes && ananas) {
+                            bildesNosaukums = "/PizzaSpritePepperoni/PepperoniMushroomsPineapples.png";
+                        } else if (senes && cili) {
+                            bildesNosaukums = "/PizzaSpritePepperoni/PepperoniMushroomsChilli.png";
+                        } else if (ananas && cili) {
+                            bildesNosaukums = "/PizzaSpritePepperoni/PepperoniPineapplesChill.png";
+                        } else if (senes) {
+                            bildesNosaukums = "/PizzaSpritePepperoni/PepperoniMushroom.png";
+                        } else if (ananas) {
+                            bildesNosaukums = "/PizzaSpritePepperoni/PepperoniPineapples.png";
+                        } else if (cili) {
+                            bildesNosaukums = "/PizzaSpritePepperoni/PepperoniChill.png";
+                        } else {
+                            bildesNosaukums = "/PizzaSprites/pepperoni.png";
+                        }
+                    }
+                    
+                    // MARGARITA PICA
+                    else if (picasNosaukums.equals("Margarita")) {
                         if (senes && ananas && cili) {
                             bildesNosaukums = "/PizzaSpriteMargarita/MargaritaAnanasMushroomChili.png";
                         } else if (senes && ananas) {
@@ -174,20 +210,25 @@ public class Sandbox extends JFrame {
                             bildesNosaukums = "/PizzaSpriteMargarita/MargaritaAnanas.png";
                         } else if (cili) {
                             bildesNosaukums = "/PizzaSpriteMargarita/MargaritaChill.png";
+                        } else {
+                            bildesNosaukums = "/PizzaSprites/margarita.png";
                         }
-                        
-                        // Mērogot jauno bildi
-                        ImageIcon jaunaIcon = new ImageIcon(getClass().getResource(bildesNosaukums));
-                        Image jaunaImg = jaunaIcon.getImage().getScaledInstance(bildesPlat, bildesAugst, Image.SCALE_SMOOTH);
-                        picaBilde.setIcon(new ImageIcon(jaunaImg));
-                        picaBilde.revalidate();
-                        picaBilde.repaint();
-                    };
+                    }
                     
-                    senesCheck.addActionListener(bildesMainitajs);
-                    ananasCheck.addActionListener(bildesMainitajs);
-                    ciliCheck.addActionListener(bildesMainitajs);
-                }
+                    // Mērogot jauno bildi
+                    ImageIcon jaunaIcon = new ImageIcon(getClass().getResource(bildesNosaukums));
+                    Image jaunaImg = jaunaIcon.getImage().getScaledInstance(bildesPlat, bildesAugst, Image.SCALE_SMOOTH);
+                    picaBilde.setIcon(new ImageIcon(jaunaImg));
+                    picaBilde.revalidate();
+                    picaBilde.repaint();
+                };
+                
+                // Pievienot listener visiem checkboxiem
+                senesCheck.addActionListener(bildesMainitajs);
+                ananasCheck.addActionListener(bildesMainitajs);
+                ciliCheck.addActionListener(bildesMainitajs);
+                
+                // ... pārējais kods
                 
                 int piedevuIzvele = JOptionPane.showConfirmDialog(
                     null,
