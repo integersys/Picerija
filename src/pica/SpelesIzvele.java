@@ -12,7 +12,12 @@ import javax.swing.SwingConstants;
 
 public class SpelesIzvele extends JPanel {
 
-    public SpelesIzvele() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public SpelesIzvele() {
         setOpaque(false);
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -41,6 +46,11 @@ public class SpelesIzvele extends JPanel {
         gbc.gridy = 2;
         gbc.insets = new Insets(0, 0, 30, 0);
         add(sandboxDesc, gbc);
+        
+        sandboxBtn.addActionListener(_ -> {
+            new Sandbox();
+        });
+
 
         // --------- 2. režīms ----------
         JButton klientiBtn = new JButton("Ar klientiem");
