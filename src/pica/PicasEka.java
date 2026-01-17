@@ -110,32 +110,62 @@ public class PicasEka extends JPanel {
         );
 
         leftPanel.setLayout(new GridBagLayout());
+        
+        ImageIcon logoIcon = new ImageIcon(getClass().getResource("logo.png"));
+        Image scaledLogo = logoIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+        JLabel logoLabel = new JLabel(new ImageIcon(scaledLogo));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.gridx = 0;
+        
 
-        GradientButton viena1 = new GradientButton("Izveidot picu");
-        GradientButton future = new GradientButton("Nākotnē");
+        GradientButton speluOpc = new GradientButton("Spēlēt!");
+        GradientButton pateicibas = new GradientButton("Pateicības");
+        
+        
+        
+        
 
         gbc.gridy = 0;
-        leftPanel.add(viena1, gbc);
+        leftPanel.add(logoLabel, gbc);
 
         gbc.gridy = 1;
-        leftPanel.add(future, gbc);
+        leftPanel.add(speluOpc, gbc);
+
+        gbc.gridy = 2;
+        leftPanel.add(pateicibas, gbc);
+        gbc.anchor = GridBagConstraints.NORTH;
+        gbc.gridy = 3;
+        gbc.weighty = 1.0;
+        leftPanel.add(Box.createVerticalGlue(), gbc);
+
+
 
         add(leftPanel, BorderLayout.WEST);
 
 
-
-        // ================= CENTRA PANELIS =================
+     // CENTRA PANELIS
         cardLayout = new CardLayout();
         centerPanel = new JPanel(cardLayout);
 
-        // Sākuma panelis
-        centerPanel.add(createHomePanel(), "HOME");
+        centerPanel.add(createHomePanel(), "sākums");
+        centerPanel.add(new PateicibasPanelis(), "pateicības");
+        centerPanel.add(new SpelesIzvele(), "speluizvele");
+
+        // TAGAD drīkst listenerus
+        pateicibas.addActionListener(e ->
+            cardLayout.show(centerPanel, "pateicības")
+        );
+
+        speluOpc.addActionListener(e ->
+            cardLayout.show(centerPanel, "speluizvele")
+        );
 
 
+
+        
+        
 
         GradientPanel centerBackground = new GradientPanel(
         		new Color(150, 160, 255),
@@ -147,12 +177,10 @@ public class PicasEka extends JPanel {
         centerBackground.add(centerPanel, BorderLayout.CENTER);
 
         add(centerBackground, BorderLayout.CENTER);
-
-
-
-        // ================= ACTION LISTENERS =================
-        viena1.addActionListener(e -> cardLayout.show(centerPanel, "PIZZA"));
     }
+
+
+     
 
     // ================= SĀKUMA SKATS =================
     private JPanel createHomePanel() {
@@ -161,7 +189,7 @@ public class PicasEka extends JPanel {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         // Title
-        JLabel titleLabel = new JLabel("Picerija", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Dominos picērija", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 40));
         titleLabel.setForeground(new Color(50, 50, 50));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // center horizontally
@@ -180,6 +208,10 @@ public class PicasEka extends JPanel {
         panel.add(gifLabel);
         panel.add(Box.createVerticalGlue()); // push everything up a bit
 
+        
+        
+        
+        
         return panel;
     }
 
@@ -214,38 +246,15 @@ public class PicasEka extends JPanel {
     // ================= MAIN =================
     public static void main(String[] args) {
         JFrame frame = new JFrame("Picerija");
+
+        ImageIcon icon = new ImageIcon(PicasEka.class.getResource("logo.png"));
+        frame.setIconImage(icon.getImage());
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 400);
         frame.add(new PicasEka());
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
     }
-    
-    class GradientPanel extends JPanel {
-        private Color c1;
-        private Color c2;
-
-        public GradientPanel(Color c1, Color c2) {
-            this.c1 = c1;
-            this.c2 = c2;
-            setOpaque(false);
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                                RenderingHints.VALUE_ANTIALIAS_ON);
-
-            GradientPaint gp = new GradientPaint(
-                    0, 0, c1,
-                    0, getHeight(), c2
-            );
-
-            g2.setPaint(gp);
-            g2.fillRect(0, 0, getWidth(), getHeight());
-            super.paintComponent(g);
-        }
     }
-    
-}
