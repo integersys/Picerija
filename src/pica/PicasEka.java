@@ -192,7 +192,7 @@ public class PicasEka extends JPanel {
         JLabel titleLabel = new JLabel("Dominos picērija", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 40));
         titleLabel.setForeground(new Color(50, 50, 50));
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // center horizontally
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT); 
 
         // GIF
         ImageIcon originalIcon = new ImageIcon(getClass().getResource("SpinningPizza.gif"));
@@ -201,12 +201,12 @@ public class PicasEka extends JPanel {
         JLabel gifLabel = new JLabel(scaledIcon, SwingConstants.CENTER);
         gifLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Add some vertical space
-        panel.add(Box.createVerticalStrut(30)); // top padding
+      
+        panel.add(Box.createVerticalStrut(30)); 
         panel.add(titleLabel);
-        panel.add(Box.createVerticalStrut(10)); // space between text and GIF
+        panel.add(Box.createVerticalStrut(10)); 
         panel.add(gifLabel);
-        panel.add(Box.createVerticalGlue()); // push everything up a bit
+        panel.add(Box.createVerticalGlue()); 
 
         
         
