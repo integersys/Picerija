@@ -263,6 +263,6 @@ public class PicasEka extends JPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         
-       // atskanotMuziku();
+       atskanotMuziku();
     }
     }

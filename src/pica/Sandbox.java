@@ -487,7 +487,7 @@ public class Sandbox extends JFrame {
           
                     	uzVietasIzvele = JOptionPane.showConfirmDialog(
                     	        null,
-                    	        "Vai savākt uz vietas?",
+                    	        "Vai savākt uz vietas?\nCitādāk, piegādes uz adresi maksā 3 eur",
                     	        "Piegādes veids",
                     	        JOptionPane.YES_NO_OPTION,
                     	        JOptionPane.QUESTION_MESSAGE
@@ -513,6 +513,7 @@ public class Sandbox extends JFrame {
                     	    adrese = "Domino's Picērija";
                     	} else {
                     	    adrese = virknesParbaude("Ievadi adresi", "Lauku iela");
+                    	    cena += 3;
                     	}
 
                     	String talrunis = talrParbaude("Ievadi tālruņa nr:", "Ievadi tālruni");
