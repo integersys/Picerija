@@ -15,13 +15,10 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
-import java.io.IOException;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -263,6 +260,6 @@ public class PicasEka extends JPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         
-       atskanotMuziku();
+        //atskanotMuziku();
     }
     }

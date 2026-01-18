@@ -12,7 +12,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -414,26 +413,27 @@ public class Sandbox extends JFrame {
                     	
                     	String uzkodas = "";
 
+                    	// ====== UZKODU IZVĒLE ======
                     	if (!izvMerce.equals("Bez mērces")) {
-
                     	    String[] uzkoduOpcijas = {
                     	        "Kartupeļi (+2.00€)",
                     	        "Siera nūjiņas (+3.00€)",
                     	        "Vistas spārniņi (+4.50€)",
                     	        "Nevēlos uzkodas"
                     	    };
-
-                    	    JComboBox<String> uzkoduBox = new JComboBox<>(uzkoduOpcijas);
-
-                    	    int uzkoduIzvele = JOptionPane.showConfirmDialog(null,uzkoduBox,"Izvēlies uzkodu",
-                    	        JOptionPane.OK_CANCEL_OPTION,
-                    	        JOptionPane.PLAIN_MESSAGE
+                    	    
+                    	    String izveletaUzkoda = (String) JOptionPane.showInputDialog(
+                    	        null,
+                    	        "Izvēlies uzkodu",
+                    	        "Uzkodu izvēle",
+                    	        JOptionPane.QUESTION_MESSAGE,
+                    	        null,
+                    	        uzkoduOpcijas,
+                    	        uzkoduOpcijas[3]
                     	    );
-
-                    	    if (uzkoduIzvele == JOptionPane.CANCEL_OPTION) return;
-
-                    	    String izveletaUzkoda = (String) uzkoduBox.getSelectedItem();
-
+                    	    
+                    	    if (izveletaUzkoda == null) return;
+                    	    
                     	    if (izveletaUzkoda.contains("Kartupeļi")) {
                     	        uzkodas = " Kartupeļi";
                     	        cena += 2.00;
@@ -443,46 +443,36 @@ public class Sandbox extends JFrame {
                     	    } else if (izveletaUzkoda.contains("Vistas")) {
                     	        uzkodas = " Vistas spārniņi";
                     	        cena += 4.50;
+                    	    }else {
+                    	    	uzkodas = "Nav";
                     	    }
                     	}
 
-                    	// ====== DZĒRIENU IZVĒLE (DROP DOWN) ======
-                    	String[] dzerienuOpcijas = {
-                    		    "Cola 0.5L",
-                    		    "Fanta 0.5L",
-                    		    "Ūdens 0.5L",
-                    		    "Enerģijas dzēriens",
-                    		    "Nevēlos dzērienu"
-                    		};
+                    	String[] dzerienuOpcijas = { "Cola 0.5L (+2.00€)","Fanta 0.5L (+2.00€)","Ūdens 0.5L (+1.50€)","Enerģijas dzēriens (+3.50€)","Nevēlos dzērienu"
+                    	};
 
-                    		JComboBox<String> dzerienuBox = new JComboBox<>(dzerienuOpcijas);
+                    	String dzeriens = (String) JOptionPane.showInputDialog(null, "Izvēlies dzērienu","Dzērienu izvēle",JOptionPane.QUESTION_MESSAGE,null,dzerienuOpcijas,dzerienuOpcijas[4]
+                    	);
 
-                    		int dzerienaIzvele = JOptionPane.showConfirmDialog(
-                    		    null,
-                    		    dzerienuBox,
-                    		    "Izvēlies dzērienu",
-                    		    JOptionPane.OK_CANCEL_OPTION,
-                    		    JOptionPane.PLAIN_MESSAGE
-                    		);
+                    	if (dzeriens == null) 
+                    		return;
 
-                    		if (dzerienaIzvele == JOptionPane.CANCEL_OPTION) return;
-
-                    		String dzeriens = (String) dzerienuBox.getSelectedItem();
-
-                    		// Pievienot cenu
-                    		switch (dzeriens) {
-                    		    case "Cola 0.5L":
-                    		    	cena += 2.00;
-                    		    case "Fanta 0.5L":
-                    		        cena += 2.00;
-                    		        break;
-                    		    case "Ūdens 0.5L":
-                    		        cena += 1.50;
-                    		        break;
-                    		    case "Enerģijas dzēriens":
-                    		        cena += 3.50;
-                    		        break;
-                    		}
+                    	// Pievienot cenu
+                    	if (dzeriens.contains("Cola")) {
+                    		dzeriens = "Cola 0.5L";
+                    	    cena += 2.00;
+                    	} else if (dzeriens.contains("Fanta")) {
+                    		dzeriens = "Fanta 0.5L";
+                    	    cena += 2.00;
+                    	} else if (dzeriens.contains("Ūdens")) {
+                    		dzeriens = "Ūdens 0.5L";
+                    	    cena += 1.50;
+                    	} else if (dzeriens.contains("Enerģijas")) {
+                    		dzeriens = "Enerģijas dzēriens";
+                    	    cena += 3.50;
+                    	} else {
+                    		dzeriens = "Nav";
+                    	}
 
           
                     	uzVietasIzvele = JOptionPane.showConfirmDialog(
