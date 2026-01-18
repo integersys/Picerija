@@ -15,7 +15,13 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
+import java.io.IOException;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -39,6 +45,7 @@ class GradientPanel extends JPanel {
         setOpaque(false);
     }
 
+    
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -222,6 +229,27 @@ public class PicasEka extends JPanel {
         return panel;
     }
 
+
+    public static Clip audioClip;
+
+    public static void atskanotMuziku() {
+        try {
+            AudioInputStream audioStream =
+                    AudioSystem.getAudioInputStream(
+                            PicasEka.class.getResource("/Audio/theme.wav")
+                    );
+
+            audioClip = AudioSystem.getClip();
+            audioClip.open(audioStream);
+            audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+            audioClip.start();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    
     public static void main(String[] args) {
         JFrame frame = new JFrame("Picerija");
 
@@ -234,6 +262,7 @@ public class PicasEka extends JPanel {
         frame.add(new PicasEka());
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
+        
+       // atskanotMuziku();
     }
     }

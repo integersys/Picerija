@@ -30,6 +30,112 @@ public class Sandbox extends JFrame {
     Queue<Pasutijums> aktiviePasutijumi = new LinkedList<>();
     ArrayList<Pasutijums> pabeigtiePasutijumi = new ArrayList<>();
  
+    String iegutPicasBildi(String picasNosaukums, boolean senes, boolean ananas, boolean cili) {
+
+        if (picasNosaukums.equals("Siera")) {
+            if (senes && ananas && cili) {
+                return "/PizzaSpriteCheese/CheeseMushroomsPineapplesChili.png";
+            } else if (senes && ananas) {
+                return "/PizzaSpriteCheese/CheeseMushroomsPineapples.png";
+            } else if (senes && cili) {
+                return "/PizzaSpriteCheese/CheeseMushroomsChili.png";
+            } else if (ananas && cili) {
+                return "/PizzaSpriteCheese/CheesePineappleChilli.png";
+            } else if (senes) {
+                return "/PizzaSpriteCheese/CheeseMushrooms.png";
+            } else if (ananas) {
+                return "/PizzaSpriteCheese/CheesePineapple.png";
+            } else if (cili) {
+                return "/PizzaSpriteCheese/CheeseChill.png";
+            } else {
+                return "/PizzaSprites/siers.png";
+            }
+        }
+        
+        
+        else if (picasNosaukums.equals("Pepperoni")) {
+            if (senes && ananas && cili) {
+                return "/PizzaSpritePepperoni/PepperoniMushroomsPineapplesChill.png";
+            } else if (senes && ananas) {
+                return "/PizzaSpritePepperoni/PepperoniMushroomsPineapples.png";
+            } else if (senes && cili) {
+                return "/PizzaSpritePepperoni/PepperoniMushroomsChilli.png";
+            } else if (ananas && cili) {
+                return "/PizzaSpritePepperoni/PepperoniPineapplesChill.png";
+            } else if (senes) {
+                return "/PizzaSpritePepperoni/PepperoniMushroom.png";
+            } else if (ananas) {
+                return "/PizzaSpritePepperoni/PepperoniPineapples.png";
+            } else if (cili) {
+                return "/PizzaSpritePepperoni/PepperoniChill.png";
+            } else {
+                return "/PizzaSprites/pepperoni.png";
+            }
+        }
+        
+        else if (picasNosaukums.equals("Margarita")) {
+            if (senes && ananas && cili) {
+                return "/PizzaSpriteMargarita/MargaritaAnanasMushroomChili.png";
+            } else if (senes && ananas) {
+                return "/PizzaSpriteMargarita/MargaritaMushroomsAnanas.png";
+            } else if (senes && cili) {
+                return "/PizzaSpriteMargarita/MargaritaMushroomsChilli.png";
+            } else if (ananas && cili) {
+                return "/PizzaSpriteMargarita/MargaritaChiliAnanas.png";
+            } else if (senes) {
+                return "/PizzaSpriteMargarita/MargaritaMushroom.png";
+            } else if (ananas) {
+                return "/PizzaSpriteMargarita/MargaritaAnanas.png";
+            } else if (cili) {
+                return "/PizzaSpriteMargarita/MargaritaChill.png";
+            } else {
+                return "/PizzaSprites/margarita.png";
+            }
+        }
+        
+
+        return "/PizzaSprites/siers.png";
+    }
+    
+    private void pabeigtPasutijumu() {
+        Pasutijums pabeigts = aktiviePasutijumi.poll();
+        
+        if (pabeigts == null) return;
+
+        pabeigtiePasutijumi.add(pabeigts);
+    }
+    
+    static String virknesParbaude(String zinojums, String noklusejums){
+        String virkne;
+        
+        do {
+            virkne = JOptionPane.showInputDialog(zinojums, noklusejums);
+            
+            if(virkne == null)
+                return null;
+            
+            virkne = virkne.trim();
+        }while(!Pattern.matches("^[\\p{L} .]+$", virkne));
+        
+        return virkne;
+    }
+    
+    
+    static String talrParbaude(String zinojums, String noklusejums) {
+        String talrunis;
+
+        do {
+            talrunis = JOptionPane.showInputDialog(null, zinojums, noklusejums, JOptionPane.PLAIN_MESSAGE);
+
+            if (talrunis == null)
+                return null; 
+
+            talrunis = talrunis.trim();
+        } while (!talrunis.matches("\\d+"));
+
+        return talrunis;
+    }
+    
     
     public Sandbox() {
     	    setTitle("Sandbox režīms");
@@ -155,80 +261,13 @@ public class Sandbox extends JFrame {
                 piedevuPanel.add(ciliCheck);
                 
                 
-                final String finalDefaultBilde = defaultBilde;
-                
-                // Mainīt bildi atkarībā no picas veida un izvēlētajām piedevām
                 ActionListener bildesMainitajs = _ -> {
                     boolean senes = senesCheck.isSelected();
                     boolean ananas = ananasCheck.isSelected();
                     boolean cili = ciliCheck.isSelected();
                     
-                    String bildesNosaukums = finalDefaultBilde; // Izmanto final kopiju
+                    String bildesNosaukums = iegutPicasBildi(picasNosaukums, senes, ananas, cili);
                     
-                    // SIERA PICA
-                    if (picasNosaukums.equals("Siera")) {
-                        if (senes && ananas && cili) {
-                            bildesNosaukums = "/PizzaSpriteCheese/CheeseMushroomsPineapplesChili.png";
-                        } else if (senes && ananas) {
-                            bildesNosaukums = "/PizzaSpriteCheese/CheeseMushroomsPineapples.png";
-                        } else if (senes && cili) {
-                            bildesNosaukums = "/PizzaSpriteCheese/CheeseMushroomsChili.png";
-                        } else if (ananas && cili) {
-                            bildesNosaukums = "/PizzaSpriteCheese/CheesePineappleChilli.png";
-                        } else if (senes) {
-                            bildesNosaukums = "/PizzaSpriteCheese/CheeseMushrooms.png";
-                        } else if (ananas) {
-                            bildesNosaukums = "/PizzaSpriteCheese/CheesePineapple.png";
-                        } else if (cili) {
-                            bildesNosaukums = "/PizzaSpriteCheese/CheeseChill.png";
-                        } else {
-                            bildesNosaukums = "/PizzaSprites/siers.png";
-                        }
-                    }
-                    
-                    // PEPPERONI PICA
-                    else if (picasNosaukums.equals("Pepperoni")) {
-                        if (senes && ananas && cili) {
-                            bildesNosaukums = "/PizzaSpritePepperoni/PepperoniMushroomsPineapplesChill.png";
-                        } else if (senes && ananas) {
-                            bildesNosaukums = "/PizzaSpritePepperoni/PepperoniMushroomsPineapples.png";
-                        } else if (senes && cili) {
-                            bildesNosaukums = "/PizzaSpritePepperoni/PepperoniMushroomsChilli.png";
-                        } else if (ananas && cili) {
-                            bildesNosaukums = "/PizzaSpritePepperoni/PepperoniPineapplesChill.png";
-                        } else if (senes) {
-                            bildesNosaukums = "/PizzaSpritePepperoni/PepperoniMushroom.png";
-                        } else if (ananas) {
-                            bildesNosaukums = "/PizzaSpritePepperoni/PepperoniPineapples.png";
-                        } else if (cili) {
-                            bildesNosaukums = "/PizzaSpritePepperoni/PepperoniChill.png";
-                        } else {
-                            bildesNosaukums = "/PizzaSprites/pepperoni.png";
-                        }
-                    }
-                    
-                    // MARGARITA PICA
-                    else if (picasNosaukums.equals("Margarita")) {
-                        if (senes && ananas && cili) {
-                            bildesNosaukums = "/PizzaSpriteMargarita/MargaritaAnanasMushroomChili.png";
-                        } else if (senes && ananas) {
-                            bildesNosaukums = "/PizzaSpriteMargarita/MargaritaMushroomsAnanas.png";
-                        } else if (senes && cili) {
-                            bildesNosaukums = "/PizzaSpriteMargarita/MargaritaMushroomsChilli.png";
-                        } else if (ananas && cili) {
-                            bildesNosaukums = "/PizzaSpriteMargarita/MargaritaChiliAnanas.png";
-                        } else if (senes) {
-                            bildesNosaukums = "/PizzaSpriteMargarita/MargaritaMushroom.png";
-                        } else if (ananas) {
-                            bildesNosaukums = "/PizzaSpriteMargarita/MargaritaAnanas.png";
-                        } else if (cili) {
-                            bildesNosaukums = "/PizzaSpriteMargarita/MargaritaChill.png";
-                        } else {
-                            bildesNosaukums = "/PizzaSprites/margarita.png";
-                        }
-                    }
-                    
-                   
                     ImageIcon jaunaIcon = new ImageIcon(getClass().getResource(bildesNosaukums));
                     Image jaunaImg = jaunaIcon.getImage().getScaledInstance(bildesPlat, bildesAugst, Image.SCALE_SMOOTH);
                     picaBilde.setIcon(new ImageIcon(jaunaImg));
@@ -571,7 +610,7 @@ public class Sandbox extends JFrame {
                 "Visi aktīvie pasūtījumi (" + aktiviePasutijumi.size() + ") saglabāti failā!");
         });
 
-        // -------- Saglabāt pabeigtos failā --------
+      
         saglabatPabeigtosBtn.addActionListener(_ -> {
             if (pabeigtiePasutijumi.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Nav pabeigtu pasūtījumu, ko saglabāt!");
@@ -599,44 +638,4 @@ public class Sandbox extends JFrame {
         setVisible(true);
     }
 
-    // -------- Pabeigt pasūtījumu --------
-    private void pabeigtPasutijumu() {
-        Pasutijums pabeigts = aktiviePasutijumi.poll();
-        
-        if (pabeigts == null) return;
-
-        // Pievienot pabeigto ArrayList
-        pabeigtiePasutijumi.add(pabeigts);
-    }
-    
-    static String virknesParbaude(String zinojums, String noklusejums){
-        String virkne;
-        
-        do {
-            virkne = JOptionPane.showInputDialog(zinojums, noklusejums);
-            
-            if(virkne == null)
-                return null;
-            
-            virkne = virkne.trim();
-        }while(!Pattern.matches("^[\\p{L} .]+$", virkne));
-        
-        return virkne;
-    }
-    
-    
-    static String talrParbaude(String zinojums, String noklusejums) {
-        String talrunis;
-
-        do {
-            talrunis = JOptionPane.showInputDialog(null, zinojums, noklusejums, JOptionPane.PLAIN_MESSAGE);
-
-            if (talrunis == null)
-                return null; 
-
-            talrunis = talrunis.trim();
-        } while (!talrunis.matches("\\d+"));
-
-        return talrunis;
-    }
 }

@@ -1,18 +1,18 @@
-Pica:
-  Tips: Pepperoni
-  Cena: 17.0 €
- Piedevas: Ananāss, Čili
-  Picas izmērs: 14 cm
-  Mērce: Šokolādes mērce
+Pasūtīta pica:
+Tips: Pepperoni
+Cena: 16.0 €
+Piedevas: Sēnes, Ananāss, Čili
+Picas izmērs: 12 cm
+Mērce: Ķiploku mērce
 
 Papildus:
-  Uzkodas:  Kartupeļi
-  Dzēriens: Cola 0.5L
-  Uz vietas savākt: Jā
+Uzkodas:  Kartupeļi
+Dzēriens: Cola 0.5L
+Uz vietas savākt: Jā
 
 Personīgie dati:
-  Vārds, uzvārds: Jānis Bērziņš
-  Adrese: Domino's Picērija
-  Tālrunis: 12
+Vārds, uzvārds: Jānis Bērziņš
+Adrese: Domino's Picērija
+Tālrunis: 45645
 ═══════════════════════════════════════════════════════
 

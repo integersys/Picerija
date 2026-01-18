@@ -30,7 +30,7 @@ public class PateicibasPanelis extends JPanel {
             "<html><center>" +
             "Autors: Intars Voitkevičs 2PT<br><br>" +
             "Iespaids ņemts no ChatGPT<br>" +
-            "Jebkādas sakritības ar reālām personām ir PILNĪGI nejaušas<br><br>" +
+            "Audio: Charlie's Here - Club Penguin OST<br><br>" +
             "Domino’s® ir Domino’s Pizza, Inc. reģistrēta preču zīme.\r\n"
             + "Visas tiesības uz logotipu un zīmolu pieder Domino’s Pizza, Inc.\r\n"
             + "Šis projekts nav saistīts ar Domino’s un nav viņu apstiprināts.\r\n"
