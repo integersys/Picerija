@@ -125,7 +125,7 @@ public class Sandbox extends JFrame {
                 JPanel piedevuPanel = new JPanel();
                 piedevuPanel.setLayout(new BoxLayout(piedevuPanel, BoxLayout.Y_AXIS));
                 
-                // Bilde virs checkboxiem - ar mērogošanu
+              
                 ImageIcon defaultIcon = new ImageIcon(getClass().getResource(defaultBilde));
                 Image defaultImg = defaultIcon.getImage().getScaledInstance(bildesPlat, bildesAugst, Image.SCALE_SMOOTH);
                 JLabel picaBilde = new JLabel(new ImageIcon(defaultImg));
@@ -141,7 +141,7 @@ public class Sandbox extends JFrame {
                 piedevuPanel.add(ananasCheck);
                 piedevuPanel.add(ciliCheck);
                 
-                // Izveidot final kopiju defaultBilde priekš lambda izteiksmes
+                
                 final String finalDefaultBilde = defaultBilde;
                 
                 // Mainīt bildi atkarībā no picas veida un izvēlētajām piedevām
@@ -215,7 +215,7 @@ public class Sandbox extends JFrame {
                         }
                     }
                     
-                    // Mērogot jauno bildi
+                   
                     ImageIcon jaunaIcon = new ImageIcon(getClass().getResource(bildesNosaukums));
                     Image jaunaImg = jaunaIcon.getImage().getScaledInstance(bildesPlat, bildesAugst, Image.SCALE_SMOOTH);
                     picaBilde.setIcon(new ImageIcon(jaunaImg));
@@ -223,12 +223,11 @@ public class Sandbox extends JFrame {
                     picaBilde.repaint();
                 };
                 
-                // Pievienot listener visiem checkboxiem
                 senesCheck.addActionListener(bildesMainitajs);
                 ananasCheck.addActionListener(bildesMainitajs);
                 ciliCheck.addActionListener(bildesMainitajs);
                 
-                // ... pārējais kods
+             
                 
                 int piedevuIzvele = JOptionPane.showConfirmDialog(
                     null,
@@ -254,15 +253,70 @@ public class Sandbox extends JFrame {
                         piedevas.append("Čili, ");
                     }
                     
-                    // Noņemt pēdējo komatu
+                    // Noņemt pēdējo komatu, lai teksts būtu labs
                     if (piedevas.length() > 0) {
                         piedevas.setLength(piedevas.length() - 2);
                     }
                     
-                    // Izveidot Pasutijums objektu
-                    Pasutijums jaunsPasutijums = new Pasutijums(picasNosaukums, cena);
+                 // ====== PICAS IZMĒRA IZVĒLE ======
+                    JPanel izmPanel = new JPanel(new GridLayout(1, 3, 10, 10));
+
+                    JPanel maza = new JPanel();
+                    maza.setLayout(new BoxLayout(maza, BoxLayout.Y_AXIS));
+                    maza.add(new JLabel("12 collas"));
+                    maza.add(new JLabel("Standarta cena, nemainās"));
+                    izmPanel.add(maza);
+
+                    JPanel videja = new JPanel();
+                    videja.setLayout(new BoxLayout(videja, BoxLayout.Y_AXIS));
+                    videja.add(new JLabel("14 collas"));
+                    videja.add(new JLabel("2.50€"));
+                    izmPanel.add(videja);
+
+                    JPanel liela = new JPanel();
+                    liela.setLayout(new BoxLayout(liela, BoxLayout.Y_AXIS));
+                    liela.add(new JLabel("16 collas"));
+                    liela.add(new JLabel("5€"));
+                    izmPanel.add(liela);
+
+                    String[] izmOpcijas = {"12 collas", "14 collas", "16 collas"};
+
+                    int izmIzvele = JOptionPane.showOptionDialog(
+                        null,
+                        izmPanel,
+                        "Izvēlies picas izmēru",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        izmOpcijas,
+                        izmOpcijas[1]
+                    );
+
+                    if (izmIzvele == -1) return;
                     
-                    String pasutijumaTeksts = picasNosaukums + " pica";
+                    String picasIzmers = "";
+
+                    switch (izmIzvele) {
+                        case 0:
+                            picasIzmers = "12 collas";
+                            break;
+                        case 1:
+                            picasIzmers = "14 collas";
+                            cena += 2.50;
+                            break;
+                        case 2:
+                            picasIzmers = "16 collas";
+                            cena += 5;
+                            break;
+                    }
+
+
+                    
+                    // Izveidot Pasutijums objektu
+                    Pasutijums jaunsPasutijums = new Pasutijums(picasNosaukums, cena, izmIzvele);
+                    
+                   String pasutijumaTeksts = picasIzmers + " " + picasNosaukums + " pica";
+
                     if (piedevas.length() > 0) {
                         pasutijumaTeksts += " ar " + piedevas;
                     }

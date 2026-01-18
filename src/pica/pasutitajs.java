@@ -25,7 +25,7 @@ public class pasutitajs {
         this.vards = vards;
         this.adrese = adrese;
         this.talrunis = talrunis;
-        this.piedeva = piedeva;
+        this.piedeva = piedzeva;
         this.picasNosaukums = picasNosaukums;
     }
 

@@ -2,7 +2,7 @@ package pica;
 public class Pasutijums {
 
     // --------- Lauki ----------
-    private int picasIzmers;
+    private int picasizmers;
     private int pasutijumaID; 
     private double cena;
     private boolean uzVietas;
@@ -15,9 +15,10 @@ public class Pasutijums {
     String tips;
 
     // --------- Konstruktors ----------
-    public Pasutijums(String tips, double cena) {
+    public Pasutijums(String tips, double cena, int picasizmers) {
         this.tips = tips;
         this.cena = cena;
+        this.picasizmers = picasizmers;
     }
 
     // --------- Getter metodes ----------

@@ -265,6 +265,7 @@ public class PicasEka extends JPanel {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 400);
+        frame.setResizable(false);
         frame.add(new PicasEka());
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
