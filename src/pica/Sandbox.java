@@ -3,12 +3,9 @@ package pica;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.regex.Pattern;
 
 import javax.swing.BoxLayout;
@@ -20,34 +17,49 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 
 public class Sandbox extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static int uzVietasIzvele;
-    ArrayList<String> aktiviePasutijumi = new ArrayList<>();
-    ArrayList<String> pabeigtiePasutijumi = new ArrayList<>();
-    File pabeigtieFails = new File("pabeigtie_pasutijumi.txt");
-    File aktiviePas = new File("aktivie_pasutijumi.txt");
-
+    Queue<Pasutijums> aktiviePasutijumi = new LinkedList<>();
+    ArrayList<Pasutijums> pabeigtiePasutijumi = new ArrayList<>();
+ 
+    
     public Sandbox() {
-        setTitle("Sandbox režīms");
-        setSize(400, 300);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    	    setTitle("Sandbox režīms");
+    	    setSize(400, 400); 
+    	    setLocationRelativeTo(null);
+    	    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        setLayout(new GridLayout(3, 1, 10, 10));
+    	    setLayout(new GridLayout(8, 1, 10, 10));
 
-        JButton pasutitBtn = new JButton("Izveidot pasūtījumu");
-        JButton aktivieBtn = new JButton("Aktīvie pasūtījumi");
-        JButton pabeigtieBtn = new JButton("Pabeigtie pasūtījumi");
+    	    JButton pasutitBtn = new JButton("Izveidot pasūtījumu");
+    	    JButton apkalpotBtn = new JButton("Apkalpot nākamo pasūtījumu");  
+    	    JButton aktivieBtn = new JButton("Aktīvie pasūtījumi");
+    	    JButton pabeigtieBtn = new JButton("Pabeigtie pasūtījumi");
 
-        add(pasutitBtn);
-        add(aktivieBtn);
-        add(pabeigtieBtn);
+    	    JButton saglabatAktivosBtn = new JButton("Saglabāt aktīvos failā");
+    	    JButton saglabatPabeigtosBtn = new JButton("Saglabāt pabeigtos failā");
+    	    JButton skatitAktivosFailaBtn = new JButton("Skatīt aktīvos no faila");
+    	    JButton skatitPabeigtosFailaBtn = new JButton("Skatīt pabeigtos no faila");
+
+    	    add(pasutitBtn);
+    	    add(apkalpotBtn);  
+    	    add(aktivieBtn);
+    	    add(pabeigtieBtn);
+    	    add(saglabatAktivosBtn);
+    	    add(saglabatPabeigtosBtn);
+    	    add(skatitAktivosFailaBtn);
+    	    add(skatitPabeigtosFailaBtn);
 
         // -------- Pasūtīt --------
-     // -------- Pasūtīt --------
-        pasutitBtn.addActionListener(e -> {
+        pasutitBtn.addActionListener(_ -> {
             JPanel panel = new JPanel();
             panel.setLayout(new GridLayout(1, 3, 10, 10));
             
@@ -146,7 +158,7 @@ public class Sandbox extends JFrame {
                 final String finalDefaultBilde = defaultBilde;
                 
                 // Mainīt bildi atkarībā no picas veida un izvēlētajām piedevām
-                ActionListener bildesMainitajs = a -> {
+                ActionListener bildesMainitajs = _ -> {
                     boolean senes = senesCheck.isSelected();
                     boolean ananas = ananasCheck.isSelected();
                     boolean cili = ciliCheck.isSelected();
@@ -254,10 +266,11 @@ public class Sandbox extends JFrame {
                         piedevas.append("Čili, ");
                     }
                     
-                    // Noņemt pēdējo komatu, lai teksts būtu labs
-                    if (piedevas.length() > 0) {
-                        piedevas.setLength(piedevas.length() - 2);
+                    String piedevuTeksts = piedevas.toString();
+                    if (piedevuTeksts.endsWith(", ")) {
+                        piedevuTeksts = piedevuTeksts.substring(0, piedevuTeksts.length() - 2);
                     }
+                    
                     
                  // ====== PICAS IZMĒRA IZVĒLE ======
                     JPanel izmPanel = new JPanel(new GridLayout(1, 3, 10, 10));
@@ -383,55 +396,54 @@ public class Sandbox extends JFrame {
                     	    String izveletaUzkoda = (String) uzkoduBox.getSelectedItem();
 
                     	    if (izveletaUzkoda.contains("Kartupeļi")) {
-                    	        uzkodas = " + Kartupeļi";
+                    	        uzkodas = " Kartupeļi";
                     	        cena += 2.00;
                     	    } else if (izveletaUzkoda.contains("Siera")) {
-                    	        uzkodas = " + Siera nūjiņas";
+                    	        uzkodas = " Siera nūjiņas";
                     	        cena += 3.00;
                     	    } else if (izveletaUzkoda.contains("Vistas")) {
-                    	        uzkodas = " + Vistas spārniņi";
+                    	        uzkodas = " Vistas spārniņi";
                     	        cena += 4.50;
                     	    }
                     	}
 
                     	// ====== DZĒRIENU IZVĒLE (DROP DOWN) ======
-                    	String dzeriens = "";
-
                     	String[] dzerienuOpcijas = {
-                    	    "Cola 0.5L (+2.00€)",
-                    	    "Fanta 0.5L (+2.00€)",
-                    	    "Ūdens 0.5L (+1.50€)",
-                    	    "Enerģijas dzēriens (+3.50€)",
-                    	    "Nevēlos dzērienu"
-                    	};
+                    		    "Cola 0.5L",
+                    		    "Fanta 0.5L",
+                    		    "Ūdens 0.5L",
+                    		    "Enerģijas dzēriens",
+                    		    "Nevēlos dzērienu"
+                    		};
 
-                    	JComboBox<String> dzerienuBox = new JComboBox<>(dzerienuOpcijas);
+                    		JComboBox<String> dzerienuBox = new JComboBox<>(dzerienuOpcijas);
 
-                    	int dzerienaIzvele = JOptionPane.showConfirmDialog(
-                    	    null,
-                    	    dzerienuBox,
-                    	    "Izvēlies dzērienu",
-                    	    JOptionPane.OK_CANCEL_OPTION,
-                    	    JOptionPane.PLAIN_MESSAGE
-                    	);
+                    		int dzerienaIzvele = JOptionPane.showConfirmDialog(
+                    		    null,
+                    		    dzerienuBox,
+                    		    "Izvēlies dzērienu",
+                    		    JOptionPane.OK_CANCEL_OPTION,
+                    		    JOptionPane.PLAIN_MESSAGE
+                    		);
 
-                    	if (dzerienaIzvele == JOptionPane.CANCEL_OPTION) return;
+                    		if (dzerienaIzvele == JOptionPane.CANCEL_OPTION) return;
 
-                    	String izveletsDzeriens = (String) dzerienuBox.getSelectedItem();
+                    		String dzeriens = (String) dzerienuBox.getSelectedItem();
 
-                    	if (izveletsDzeriens.contains("Cola")) {
-                    	    dzeriens = " + Cola 0.5L";
-                    	    cena += 2.00;
-                    	} else if (izveletsDzeriens.contains("Fanta")) {
-                    	    dzeriens = " + Fanta 0.5L";
-                    	    cena += 2.00;
-                    	} else if (izveletsDzeriens.contains("Ūdens")) {
-                    	    dzeriens = " + Ūdens 0.5L";
-                    	    cena += 1.50;
-                    	} else if (izveletsDzeriens.contains("Enerģijas")) {
-                    	    dzeriens = " + Enerģijas dzēriens";
-                    	    cena += 3.50;
-                    	}
+                    		// Pievienot cenu
+                    		switch (dzeriens) {
+                    		    case "Cola 0.5L":
+                    		    	cena += 2.00;
+                    		    case "Fanta 0.5L":
+                    		        cena += 2.00;
+                    		        break;
+                    		    case "Ūdens 0.5L":
+                    		        cena += 1.50;
+                    		        break;
+                    		    case "Enerģijas dzēriens":
+                    		        cena += 3.50;
+                    		        break;
+                    		}
 
           
                     	uzVietasIzvele = JOptionPane.showConfirmDialog(
@@ -467,28 +479,17 @@ public class Sandbox extends JFrame {
                     	String talrunis = talrParbaude("Ievadi tālruņa nr:", "Ievadi tālruni");
                     	if (talrunis == null || talrunis.trim().isEmpty()) return;
 
-                    	Pasutijums jaunsPasutijums = new Pasutijums(picasNosaukums, cena, picasIzmers, izvMerce, uzkodas, dzeriens, savakt, pilnsVards, adrese, talrunis);
+                    	Pasutijums Pasutijums = new Pasutijums(picasNosaukums, cena, piedevuTeksts, picasIzmers, izvMerce, uzkodas, dzeriens, savakt, pilnsVards, adrese, talrunis);
 
                     	
                     	
                     	// Izveidot pasūtījuma tekstu
-                    	String pasutijumaTeksts = picasIzmers + "\" " + picasNosaukums + " pica" + uzkodas + dzeriens;
-
-                    	if (piedevas.length() > 0) {
-                    	    pasutijumaTeksts += " ar " + piedevas;
-                    	}
-
-                    	if (!izvMerce.isEmpty()) {
-                    	    pasutijumaTeksts += " + " + izvMerce;  
-                    	}
-
-                    	pasutijumaTeksts += " - €" + String.format("%.2f", cena);
+                    	String pasutijumaTeksts = Pasutijums.toString();
 
                     	// Pievienot sarakstam
-                    	aktiviePasutijumi.add(pasutijumaTeksts);
+                    	aktiviePasutijumi.add(Pasutijums);
 
-                    	JOptionPane.showMessageDialog(this, 
-                    	    "Pasūtīts: " + pasutijumaTeksts);
+                    	JOptionPane.showMessageDialog(null, pasutijumaTeksts);
                 }
             }
         });
@@ -496,87 +497,134 @@ public class Sandbox extends JFrame {
 
 
 
-        // -------- Aktīvie --------
-        aktivieBtn.addActionListener(e -> {
+        apkalpotBtn.addActionListener(_ -> {
             if (aktiviePasutijumi.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Nav aktīvu pasūtījumu.");
+                JOptionPane.showMessageDialog(this, 
+                    "Nav aktīvu pasūtījumu!", 
+                    "Informācija", 
+                    JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < aktiviePasutijumi.size(); i++) {
-                sb.append(i + 1).append(". ")
-                  .append(aktiviePasutijumi.get(i))
-                  .append("\n");
-            }
+            Pasutijums nakamais = aktiviePasutijumi.peek();  
 
-            int choice = JOptionPane.showConfirmDialog(
-                this,
-                sb + "\nVai atzīmēt pirmo kā pabeigtu?",
-                "Aktīvie pasūtījumi",
-                JOptionPane.YES_NO_OPTION
+            int choice = JOptionPane.showConfirmDialog(null,"Nākamais pasūtījums:\n\n" + nakamais.toString() + "\n\nVai atzīmēt kā pabeigtu?","Apkalpot pasūtījumu",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE
             );
 
             if (choice == JOptionPane.YES_OPTION) {
-                pabeigtPasutijumu(0);
+                pabeigtPasutijumu();
+                JOptionPane.showMessageDialog(this, 
+                    "Pasūtījums pabeigts!", 
+                    "Veiksmīgi", 
+                    JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
-        // -------- Pabeigtie --------
-        pabeigtieBtn.addActionListener(e -> {
-            JOptionPane.showMessageDialog(
-                this,
-                nolasitPabeigtos(),
-                "Pabeigtie pasūtījumi",
-                JOptionPane.INFORMATION_MESSAGE
-            );
+        // -------- Aktīvie pasūtījumi --------
+        aktivieBtn.addActionListener(_ -> {
+            if (aktiviePasutijumi.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Nav aktīvu pasūtījumu!");
+                return;
+            }
+            
+            StringBuilder sb = new StringBuilder();
+            int i = 1;
+            for (Pasutijums p : aktiviePasutijumi) {
+                sb.append(i++).append(". ").append(p.toString()).append("\n\n");
+            }
+            
+            JTextArea ta = new JTextArea(sb.toString(), 20, 60);
+            ta.setEditable(false);
+            JScrollPane sp = new JScrollPane(ta);
+            JOptionPane.showMessageDialog(this, sp, "Aktīvie pasūtījumi", JOptionPane.PLAIN_MESSAGE);
         });
 
+        // -------- Pabeigtie pasūtījumi --------
+        pabeigtieBtn.addActionListener(_ -> {
+            if (pabeigtiePasutijumi.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Nav pabeigtu pasūtījumu!");
+                return;
+            }
+            
+            StringBuilder sb = new StringBuilder();
+            int i = 1;
+            for (Pasutijums p : pabeigtiePasutijumi) {
+                sb.append(i++).append(". ").append(p.toString()).append("\n\n");
+            }
+            
+            JTextArea ta = new JTextArea(sb.toString(), 20, 60);
+            ta.setEditable(false);
+            JScrollPane sp = new JScrollPane(ta);
+            JOptionPane.showMessageDialog(this, sp, "Pabeigtie pasūtījumi", JOptionPane.PLAIN_MESSAGE);
+        });
+
+        // -------- Saglabāt aktīvos failā --------
+        saglabatAktivosBtn.addActionListener(_ -> {
+            if (aktiviePasutijumi.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Nav aktīvu pasūtījumu, ko saglabāt!");
+                return;
+            }
+            
+            DarbsArFailu.saglabatAktivus(aktiviePasutijumi);
+            
+            JOptionPane.showMessageDialog(this, 
+                "Visi aktīvie pasūtījumi (" + aktiviePasutijumi.size() + ") saglabāti failā!");
+        });
+
+        // -------- Saglabāt pabeigtos failā --------
+        saglabatPabeigtosBtn.addActionListener(_ -> {
+            if (pabeigtiePasutijumi.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Nav pabeigtu pasūtījumu, ko saglabāt!");
+                return;
+            }
+            
+            DarbsArFailu.saglabatPabeigtos(pabeigtiePasutijumi);
+            
+            JOptionPane.showMessageDialog(this, 
+                "Visi pabeigtie pasūtījumi (" + pabeigtiePasutijumi.size() + ") saglabāti failā!");
+        });
+
+        // -------- Skatīt aktīvos no faila --------
+        skatitAktivosFailaBtn.addActionListener(_ -> {
+            DarbsArFailu.skatitAktivos();
+        });
+
+        // -------- Skatīt pabeigtos no faila --------
+        skatitPabeigtosFailaBtn.addActionListener(_ -> {
+            DarbsArFailu.skatitPabeigtos();
+        });
+
+        
+        
         setVisible(true);
     }
 
-    private void pabeigtPasutijumu(int index) {
-        String pabeigts = aktiviePasutijumi.remove(index);
+    // -------- Pabeigt pasūtījumu --------
+    private void pabeigtPasutijumu() {
+        Pasutijums pabeigts = aktiviePasutijumi.poll();
+        
+        if (pabeigts == null) return;
 
-        try (FileWriter fw = new FileWriter(pabeigtieFails, true)) {
-            fw.write(pabeigts + "\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private String nolasitPabeigtos() {
-        if (!pabeigtieFails.exists()) return "Nav pabeigtu pasūtījumu.";
-
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(pabeigtieFails))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append("• ").append(line).append("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sb.toString();
+        // Pievienot pabeigto ArrayList
+        pabeigtiePasutijumi.add(pabeigts);
     }
     
     static String virknesParbaude(String zinojums, String noklusejums){
-		String virkne;
-		
-		do {
-			virkne = JOptionPane.showInputDialog(zinojums, noklusejums);
-			
-			if(virkne == null)
-				return null;
-			
-			virkne = virkne.trim();
-		}while(!Pattern.matches("^[\\p{L} .]+$", virkne));
-		
-		return virkne;
-	}
+        String virkne;
+        
+        do {
+            virkne = JOptionPane.showInputDialog(zinojums, noklusejums);
+            
+            if(virkne == null)
+                return null;
+            
+            virkne = virkne.trim();
+        }while(!Pattern.matches("^[\\p{L} .]+$", virkne));
+        
+        return virkne;
+    }
     
     
-    //Kaut kā atceros, ka mēs esam jau šādu pārbaudi veidojuši senāk, tikai nevaru atrast kurā uzdevumā tā bija
     static String talrParbaude(String zinojums, String noklusejums) {
         String talrunis;
 
@@ -584,13 +632,11 @@ public class Sandbox extends JFrame {
             talrunis = JOptionPane.showInputDialog(null, zinojums, noklusejums, JOptionPane.PLAIN_MESSAGE);
 
             if (talrunis == null)
-            	return null; 
+                return null; 
 
             talrunis = talrunis.trim();
         } while (!talrunis.matches("\\d+"));
 
         return talrunis;
     }
-
-    
 }
