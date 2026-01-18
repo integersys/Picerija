@@ -32,6 +32,54 @@ public class Pasutijums {
         this.adrese = adrese;
         this.talr = talr;
     }
+    
+    public static double aprekinatCenu(String picasNosaukums,String piedevas,int picasIzmers,String merce,String uzkodas,String dzeriens,boolean savakt
+    ) {
+        double cena = 0;
+
+        if (picasNosaukums.equals("Siera")) {
+            cena = 3.50;
+        } else if (picasNosaukums.equals("Pepperoni")) {
+            cena = 4.00;
+        } else if (picasNosaukums.equals("Margarita")) {
+            cena = 5.00;
+        }
+
+        if (piedevas != null) {
+            if (piedevas.contains("Sēnes")) cena += 2.50;
+            if (piedevas.contains("Ananāss")) cena += 0.50;
+            if (piedevas.contains("Čili")) cena += 1.50;
+        }
+
+        if (picasIzmers == 14) cena += 2.50;
+        if (picasIzmers == 16) cena += 5.00;
+
+        if (merce != null) {
+            if (merce.equals("Barbekjū mērce") || merce.equals("Ķiploku mērce")) {
+                cena += 1.50;
+            } else if (merce.equals("Šokolādes mērce")) {
+                cena += 2.50;
+            }
+        }
+
+        if (uzkodas != null && !uzkodas.equals("Nav")) {
+            if (uzkodas.contains("Kartupeļi")) cena += 2.00;
+            else if (uzkodas.contains("Siera nūjiņas")) cena += 3.00;
+            else if (uzkodas.contains("Vistas spārniņi")) cena += 4.50;
+        }
+
+        if (dzeriens != null && !dzeriens.equals("Nav")) {
+            if (dzeriens.equals("Cola 0.5L")) cena += 2.00;
+            else if (dzeriens.equals("Fanta 0.5L")) cena += 2.00;
+            else if (dzeriens.equals("Ūdens 0.5L")) cena += 1.50;
+            else if (dzeriens.equals("Enerģijas dzēriens")) cena += 3.50;
+        }
+
+        if (!savakt) cena += 3.00;
+
+        return cena;
+    }
+
 
 //   @Override
     public String toString() {

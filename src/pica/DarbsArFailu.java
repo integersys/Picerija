@@ -16,7 +16,7 @@ public class DarbsArFailu {
     static String aktivieFailaNosaukums = "aktivie_pasutijumi.txt";
     static String pabeigtieFailaNosaukums = "pabeigtie_pasutijumi.txt";
     
-    // Saglabāt VISUS aktīvos pasūtījumus (pārraksta failu)
+    
     static void saglabatAktivus(Queue<Pasutijums> aktiviePasutijumi) {
         try {
             // false nozīmē, ka pārrakstām failu (nevis append)
@@ -26,7 +26,7 @@ public class DarbsArFailu {
             for (Pasutijums p : aktiviePasutijumi) {
                 pw.println(p.toString());
                 pw.println("═══════════════════════════════════════════════════════");
-                pw.println(); // Tukša rinda
+                pw.println();
             }
             
             pw.close();
@@ -35,10 +35,10 @@ public class DarbsArFailu {
         }
     }
     
-    // Saglabāt VISUS pabeigtos pasūtījumus (pārraksta failu)
+
     static void saglabatPabeigtos(ArrayList<Pasutijums> pabeigtiePasutijumi) {
         try {
-            // false nozīmē, ka pārrakstām failu (nevis append)
+           
             FileWriter fw = new FileWriter(pabeigtieFailaNosaukums, false);
             PrintWriter pw = new PrintWriter(fw);
             
@@ -54,7 +54,7 @@ public class DarbsArFailu {
         }
     }
     
-    // Skatīt aktīvos pasūtījumus
+
     static void skatitAktivos() {
         String teksts, str = "";
         try {
@@ -80,7 +80,7 @@ public class DarbsArFailu {
         }
     }
     
-    // Skatīt pabeigtos pasūtījumus
+
     static void skatitPabeigtos() {
         String teksts, str = "";
         try {
@@ -95,6 +95,7 @@ public class DarbsArFailu {
                 JOptionPane.showMessageDialog(null, "Nav pabeigtu pasūtījumu failā!");
                 return;
             }
+            
             
             JTextArea ta = new JTextArea(str, 20, 60);
             ta.setEditable(false);

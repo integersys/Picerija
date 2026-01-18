@@ -119,6 +119,22 @@ public class Sandbox extends JFrame {
         return virkne;
     }
     
+    static String adresesParbaude(String zinojums, String noklusejums) {
+        String virkne;
+
+        do {
+            virkne = JOptionPane.showInputDialog(zinojums, noklusejums);
+
+            if (virkne == null)
+                return null;
+
+            virkne = virkne.trim();
+        } while (!Pattern.matches("^(?=.*\\p{L})(?=.*\\d)[\\p{L}\\d .,-]+$", virkne));
+
+        return virkne;
+    }
+
+    
     
     static String talrParbaude(String zinojums, String noklusejums) {
         String talrunis;
@@ -220,21 +236,17 @@ public class Sandbox extends JFrame {
             
             if (izvele >= 0 && izvele < 3) {
                 String picasNosaukums = opcijas[izvele];
-                double cena = 0;
                 String defaultBilde = "";
                 
                 // Noteikt cenu UN default bildi atkarībā no picas veida
                 switch(picasNosaukums) {
                     case "Siera":
-                        cena = 3.50;
                         defaultBilde = "/PizzaSprites/siers.png";
                         break;
                     case "Pepperoni":
-                        cena = 4;
                         defaultBilde = "/PizzaSprites/pepperoni.png";
                         break;
                     case "Margarita":
-                        cena = 5;
                         defaultBilde = "/PizzaSprites/margarita.png";
                         break;
                 }
@@ -292,15 +304,12 @@ public class Sandbox extends JFrame {
                     StringBuilder piedevas = new StringBuilder();
                     
                     if (senesCheck.isSelected()) {
-                        cena += 2.50;
                         piedevas.append("Sēnes, ");
                     }
                     if (ananasCheck.isSelected()) {
-                        cena += 0.50;
                         piedevas.append("Ananāss, ");
                     }
                     if (ciliCheck.isSelected()) {
-                        cena += 1.50;
                         piedevas.append("Čili, ");
                     }
                     
@@ -309,8 +318,7 @@ public class Sandbox extends JFrame {
                         piedevuTeksts = piedevuTeksts.substring(0, piedevuTeksts.length() - 2);
                     }
                     
-                    
-                 // ====== PICAS IZMĒRA IZVĒLE ======
+                   
                     JPanel izmPanel = new JPanel(new GridLayout(1, 3, 10, 10));
 
                     JPanel maza = new JPanel();
@@ -347,11 +355,9 @@ public class Sandbox extends JFrame {
                             break;
                         case 1:
                             picasIzmers = 14;
-                            cena += 2.50;
                             break;
                         case 2:
                             picasIzmers = 16;
-                            cena += 5;
                             break;
                         case 3:
                         	return;
@@ -396,17 +402,14 @@ public class Sandbox extends JFrame {
                     	switch (mercuIzvele) {
                     	    case 0: 
                     	        izvMerce = "Barbekjū mērce";
-                    	        cena += 1.50;
                     	        break;
                     	    case 1: 
                     	        izvMerce = "Ķiploku mērce";
-                    	        cena += 1.50;
                     	        break;
                     	    case 2: 
                     	        izvMerce = "Šokolādes mērce";
-                    	        cena += 2.50;
                     	        break;
-                    	    case 3: // Nevēlos
+                    	    case 3: 
                     	        izvMerce = "Bez mērces";
                     	        break;
                     	}
@@ -436,13 +439,10 @@ public class Sandbox extends JFrame {
                     	    
                     	    if (izveletaUzkoda.contains("Kartupeļi")) {
                     	        uzkodas = " Kartupeļi";
-                    	        cena += 2.00;
                     	    } else if (izveletaUzkoda.contains("Siera")) {
                     	        uzkodas = " Siera nūjiņas";
-                    	        cena += 3.00;
                     	    } else if (izveletaUzkoda.contains("Vistas")) {
                     	        uzkodas = " Vistas spārniņi";
-                    	        cena += 4.50;
                     	    }else {
                     	    	uzkodas = "Nav";
                     	    }
@@ -457,39 +457,37 @@ public class Sandbox extends JFrame {
                     	if (dzeriens == null) 
                     		return;
 
-                    	// Pievienot cenu
                     	if (dzeriens.contains("Cola")) {
                     		dzeriens = "Cola 0.5L";
-                    	    cena += 2.00;
                     	} else if (dzeriens.contains("Fanta")) {
                     		dzeriens = "Fanta 0.5L";
-                    	    cena += 2.00;
                     	} else if (dzeriens.contains("Ūdens")) {
                     		dzeriens = "Ūdens 0.5L";
-                    	    cena += 1.50;
                     	} else if (dzeriens.contains("Enerģijas")) {
                     		dzeriens = "Enerģijas dzēriens";
-                    	    cena += 3.50;
                     	} else {
                     		dzeriens = "Nav";
                     	}
 
-          
-                    	uzVietasIzvele = JOptionPane.showConfirmDialog(
-                    	        null,
-                    	        "Vai savākt uz vietas?\nCitādāk, piegādes uz adresi maksā 3 eur",
-                    	        "Piegādes veids",
-                    	        JOptionPane.YES_NO_OPTION,
-                    	        JOptionPane.QUESTION_MESSAGE
-                    	);
+                    	String[] izvopcijas = {"Jā", "Nē"};
 
-    
-                    	if (uzVietasIzvele == -1) {
-                    	    return; 
+                    	int uzVietasIzvele = JOptionPane.showOptionDialog(
+                    	    null,
+                    	    "Vai savākt uz vietas?\nCitādāk, piegāde uz adresi maksā 3 €",
+                    	    "Piegādes veids",
+                    	    JOptionPane.DEFAULT_OPTION,
+                    	    JOptionPane.QUESTION_MESSAGE,
+                    	    null,
+                    	    izvopcijas,
+                    	    izvopcijas[0]
+                    	);
+                    	
+                    	if(uzVietasIzvele == -1) {
+                    		return;
                     	}
 
-                    	
-                    	boolean savakt = (uzVietasIzvele == JOptionPane.YES_OPTION) ? true : false;
+                    	boolean savakt = (uzVietasIzvele == 0);                    	
+
 
                    
                     	String vards = virknesParbaude("Ievadi vārdu", "Jānis");
@@ -502,21 +500,19 @@ public class Sandbox extends JFrame {
                     	if (savakt) {
                     	    adrese = "Domino's Picērija";
                     	} else {
-                    	    adrese = virknesParbaude("Ievadi adresi", "Lauku iela");
-                    	    cena += 3;
+                    	    adrese = adresesParbaude("Ievadi adresi", "Lauku iela 23");
                     	}
 
                     	String talrunis = talrParbaude("Ievadi tālruņa nr:", "Ievadi tālruni");
                     	if (talrunis == null || talrunis.trim().isEmpty()) return;
-
-                    	Pasutijums Pasutijums = new Pasutijums(picasNosaukums, cena, piedevuTeksts, picasIzmers, izvMerce, uzkodas, dzeriens, savakt, pilnsVards, adrese, talrunis);
-
                     	
-                    	
-                    	// Izveidot pasūtījuma tekstu
+                    	double galaCena = Pasutijums.aprekinatCenu(picasNosaukums,piedevuTeksts,picasIzmers,izvMerce,uzkodas,dzeriens, savakt);
+
+                    	Pasutijums Pasutijums = new Pasutijums(picasNosaukums, galaCena, piedevuTeksts, picasIzmers, izvMerce, uzkodas, dzeriens, savakt, pilnsVards, adrese, talrunis);
+
+
                     	String pasutijumaTeksts = Pasutijums.toString();
 
-                    	// Pievienot sarakstam
                     	aktiviePasutijumi.add(Pasutijums);
 
                     	JOptionPane.showMessageDialog(null, pasutijumaTeksts);

@@ -124,7 +124,8 @@ public class PicasEka extends JPanel {
 
         leftPanel.setLayout(new GridBagLayout());
         
-        ImageIcon logoIcon = new ImageIcon(getClass().getResource("logo.png"));
+        ImageIcon logoIcon =new ImageIcon(PicasEka.class.getResource("/pica/logo.png"));
+
         Image scaledLogo = logoIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
         JLabel logoLabel = new JLabel(new ImageIcon(scaledLogo));
 
@@ -206,7 +207,7 @@ public class PicasEka extends JPanel {
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT); 
 
         // GIF
-        ImageIcon originalIcon = new ImageIcon(getClass().getResource("SpinningPizza.gif"));
+        ImageIcon originalIcon =new ImageIcon(PicasEka.class.getResource("/pica/SpinningPizza.gif"));
         Image scaledImage = originalIcon.getImage().getScaledInstance(350, 150, Image.SCALE_DEFAULT);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         JLabel gifLabel = new JLabel(scaledIcon, SwingConstants.CENTER);
@@ -249,8 +250,8 @@ public class PicasEka extends JPanel {
     
     public static void main(String[] args) {
         JFrame frame = new JFrame("Picerija");
-
-        ImageIcon icon = new ImageIcon(PicasEka.class.getResource("logo.png"));
+        ImageIcon icon =
+        	    new ImageIcon(PicasEka.class.getResource("/pica/logo.png"));
         frame.setIconImage(icon.getImage());
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
