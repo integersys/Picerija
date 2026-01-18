@@ -15,7 +15,6 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
-import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -110,9 +109,6 @@ public class PicasEka extends JPanel {
     private CardLayout cardLayout;
     private JPanel centerPanel;
 
-    // Datu glabāšana
-    private ArrayList<pasutitajs> pasutijumi = new ArrayList<>();
-
     public PicasEka() {
         setLayout(new BorderLayout());
 
@@ -193,9 +189,7 @@ public class PicasEka extends JPanel {
     }
 
 
-     
-
-    // ================= SĀKUMA SKATS =================
+    
     private JPanel createHomePanel() {
         JPanel panel = new JPanel();
         panel.setOpaque(false);
@@ -228,35 +222,6 @@ public class PicasEka extends JPanel {
         return panel;
     }
 
-
-
-    
-    
-
-        
-        
-
-        // ================= POGA =================
-       
-
-    // ================= CENAS APRĒĶINS =================
-    private double picasCena(int izmers, boolean uzVietas, String piedeva) {
-        double cena = 0;
-
-        if (izmers == 10) cena += 3.5;
-        if (izmers == 15) cena += 5.5;
-        if (izmers == 20) cena += 7.0;
-
-        if (piedeva.equals("Sēnes")) cena += 1.8;
-        if (piedeva.equals("Pepperoni")) cena += 2.5;
-        if (piedeva.equals("Ananāss")) cena += 2.0;
-
-        if (!uzVietas) cena += 3.2;
-
-        return cena;
-    }
-
-    // ================= MAIN =================
     public static void main(String[] args) {
         JFrame frame = new JFrame("Picerija");
 

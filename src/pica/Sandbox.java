@@ -9,20 +9,21 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
-
 public class Sandbox extends JFrame {
-
+	public static int uzVietasIzvele;
     ArrayList<String> aktiviePasutijumi = new ArrayList<>();
     ArrayList<String> pabeigtiePasutijumi = new ArrayList<>();
     File pabeigtieFails = new File("pabeigtie_pasutijumi.txt");
@@ -278,55 +279,216 @@ public class Sandbox extends JFrame {
                     liela.add(new JLabel("16 collas"));
                     liela.add(new JLabel("5€"));
                     izmPanel.add(liela);
+            
+                    
 
-                    String[] izmOpcijas = {"12 collas", "14 collas", "16 collas"};
+                    String[] izmOpcijas = {"12 collas", "14 collas", "16 collas", "Atcelt"};
 
-                    int izmIzvele = JOptionPane.showOptionDialog(
-                        null,
-                        izmPanel,
-                        "Izvēlies picas izmēru",
-                        JOptionPane.DEFAULT_OPTION,
-                        JOptionPane.PLAIN_MESSAGE,
-                        null,
-                        izmOpcijas,
-                        izmOpcijas[1]
+                    int izmIzvele = JOptionPane.showOptionDialog(null, izmPanel,"Izvēlies picas izmēru",JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,izmOpcijas,izmOpcijas[1]
                     );
-
+  
                     if (izmIzvele == -1) return;
                     
-                    String picasIzmers = "";
+                    int picasIzmers = 12;
 
                     switch (izmIzvele) {
                         case 0:
-                            picasIzmers = "12 collas";
                             break;
                         case 1:
-                            picasIzmers = "14 collas";
+                            picasIzmers = 14;
                             cena += 2.50;
                             break;
                         case 2:
-                            picasIzmers = "16 collas";
+                            picasIzmers = 16;
                             cena += 5;
                             break;
+                        case 3:
+                        	return;
                     }
+                    
+                 // ====== MĒRCES IZVĒLE ======
+                    JPanel MercOpc = new JPanel(new GridLayout(1, 4, 10, 10));
 
+                    JPanel bbq = new JPanel();
+                    bbq.setLayout(new BoxLayout(bbq, BoxLayout.Y_AXIS));
+                    bbq.add(new JLabel("Barbekjū mērce"));
+                    bbq.add(new JLabel("1.50€"));
+                    MercOpc.add(bbq);  
 
-                    
-                    // Izveidot Pasutijums objektu
-                    Pasutijums jaunsPasutijums = new Pasutijums(picasNosaukums, cena, izmIzvele);
-                    
-                   String pasutijumaTeksts = picasIzmers + " " + picasNosaukums + " pica";
+                    JPanel kip = new JPanel();
+                    kip.setLayout(new BoxLayout(kip, BoxLayout.Y_AXIS));
+                    kip.add(new JLabel("Ķiploku mērce"));
+                    kip.add(new JLabel("1.50€"));
+                    MercOpc.add(kip); 
 
-                    if (piedevas.length() > 0) {
-                        pasutijumaTeksts += " ar " + piedevas;
-                    }
-                    pasutijumaTeksts += " - €" + String.format("%.2f", cena);
-                    
-                    // Pievienot sarakstam
-                    aktiviePasutijumi.add(pasutijumaTeksts);
-                    
-                    JOptionPane.showMessageDialog(this, 
-                        "Pasūtīts: " + pasutijumaTeksts);
+                    JPanel choc = new JPanel();
+                    choc.setLayout(new BoxLayout(choc, BoxLayout.Y_AXIS));
+                    choc.add(new JLabel("Šokolādes mērce"));
+                    choc.add(new JLabel("2.50€"));
+                    MercOpc.add(choc);
+
+                    JPanel neko = new JPanel();
+                    neko.setLayout(new BoxLayout(neko, BoxLayout.Y_AXIS));
+                    neko.add(new JLabel("Nevēlos"));
+                    MercOpc.add(neko);  
+
+                    String[] MercesOpc = {"Barbekjū mērce","Ķiploku mērce","Šokolādes mērce", "Nevēlos"
+                    };
+
+                    int mercuIzvele = JOptionPane.showOptionDialog(null, MercOpc, "Izvēlies mērci",JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,MercesOpc, MercesOpc[3]
+                    );
+
+                    	// Pēc mērces izvēles
+                    	if (mercuIzvele == -1) return;
+
+                    	String izvMerce = "";
+                    	switch (mercuIzvele) {
+                    	    case 0: 
+                    	        izvMerce = "Barbekjū mērce";
+                    	        cena += 1.50;
+                    	        break;
+                    	    case 1: 
+                    	        izvMerce = "Ķiploku mērce";
+                    	        cena += 1.50;
+                    	        break;
+                    	    case 2: 
+                    	        izvMerce = "Šokolādes mērce";
+                    	        cena += 2.50;
+                    	        break;
+                    	    case 3: // Nevēlos
+                    	        izvMerce = "Bez mērces";
+                    	        break;
+                    	}
+                    	
+                    	String uzkodas = "";
+
+                    	if (!izvMerce.equals("Bez mērces")) {
+
+                    	    String[] uzkoduOpcijas = {
+                    	        "Kartupeļi (+2.00€)",
+                    	        "Siera nūjiņas (+3.00€)",
+                    	        "Vistas spārniņi (+4.50€)",
+                    	        "Nevēlos uzkodas"
+                    	    };
+
+                    	    JComboBox<String> uzkoduBox = new JComboBox<>(uzkoduOpcijas);
+
+                    	    int uzkoduIzvele = JOptionPane.showConfirmDialog(null,uzkoduBox,"Izvēlies uzkodu",
+                    	        JOptionPane.OK_CANCEL_OPTION,
+                    	        JOptionPane.PLAIN_MESSAGE
+                    	    );
+
+                    	    if (uzkoduIzvele == JOptionPane.CANCEL_OPTION) return;
+
+                    	    String izveletaUzkoda = (String) uzkoduBox.getSelectedItem();
+
+                    	    if (izveletaUzkoda.contains("Kartupeļi")) {
+                    	        uzkodas = " + Kartupeļi";
+                    	        cena += 2.00;
+                    	    } else if (izveletaUzkoda.contains("Siera")) {
+                    	        uzkodas = " + Siera nūjiņas";
+                    	        cena += 3.00;
+                    	    } else if (izveletaUzkoda.contains("Vistas")) {
+                    	        uzkodas = " + Vistas spārniņi";
+                    	        cena += 4.50;
+                    	    }
+                    	}
+
+                    	// ====== DZĒRIENU IZVĒLE (DROP DOWN) ======
+                    	String dzeriens = "";
+
+                    	String[] dzerienuOpcijas = {
+                    	    "Cola 0.5L (+2.00€)",
+                    	    "Fanta 0.5L (+2.00€)",
+                    	    "Ūdens 0.5L (+1.50€)",
+                    	    "Enerģijas dzēriens (+3.50€)",
+                    	    "Nevēlos dzērienu"
+                    	};
+
+                    	JComboBox<String> dzerienuBox = new JComboBox<>(dzerienuOpcijas);
+
+                    	int dzerienaIzvele = JOptionPane.showConfirmDialog(
+                    	    null,
+                    	    dzerienuBox,
+                    	    "Izvēlies dzērienu",
+                    	    JOptionPane.OK_CANCEL_OPTION,
+                    	    JOptionPane.PLAIN_MESSAGE
+                    	);
+
+                    	if (dzerienaIzvele == JOptionPane.CANCEL_OPTION) return;
+
+                    	String izveletsDzeriens = (String) dzerienuBox.getSelectedItem();
+
+                    	if (izveletsDzeriens.contains("Cola")) {
+                    	    dzeriens = " + Cola 0.5L";
+                    	    cena += 2.00;
+                    	} else if (izveletsDzeriens.contains("Fanta")) {
+                    	    dzeriens = " + Fanta 0.5L";
+                    	    cena += 2.00;
+                    	} else if (izveletsDzeriens.contains("Ūdens")) {
+                    	    dzeriens = " + Ūdens 0.5L";
+                    	    cena += 1.50;
+                    	} else if (izveletsDzeriens.contains("Enerģijas")) {
+                    	    dzeriens = " + Enerģijas dzēriens";
+                    	    cena += 3.50;
+                    	}
+
+          
+                    	uzVietasIzvele = JOptionPane.showConfirmDialog(
+                    	        null,
+                    	        "Vai savākt uz vietas?",
+                    	        "Piegādes veids",
+                    	        JOptionPane.YES_NO_OPTION,
+                    	        JOptionPane.QUESTION_MESSAGE
+                    	);
+
+    
+                    	if (uzVietasIzvele == -1) {
+                    	    return; 
+                    	}
+
+                    	
+                    	boolean savakt = (uzVietasIzvele == JOptionPane.YES_OPTION) ? true : false;
+
+                   
+                    	String vards = virknesParbaude("Ievadi vārdu", "Jānis");
+
+                    	String uzvards = virknesParbaude("Ievadi uzvārdu", "Bērziņš");
+
+                    	String pilnsVards = vards.trim() + " " + uzvards.trim();
+
+                    	String adrese;
+                    	if (savakt) {
+                    	    adrese = "Domino's Picērija";
+                    	} else {
+                    	    adrese = virknesParbaude("Ievadi adresi", "Lauku iela");
+                    	}
+
+                    	String talrunis = talrParbaude("Ievadi tālruņa nr:", "Ievadi tālruni");
+                    	if (talrunis == null || talrunis.trim().isEmpty()) return;
+
+                    	Pasutijums jaunsPasutijums = new Pasutijums(picasNosaukums, cena, picasIzmers, izvMerce, uzkodas, dzeriens, savakt, pilnsVards, adrese, talrunis);
+
+                    	
+                    	
+                    	// Izveidot pasūtījuma tekstu
+                    	String pasutijumaTeksts = picasIzmers + "\" " + picasNosaukums + " pica" + uzkodas + dzeriens;
+
+                    	if (piedevas.length() > 0) {
+                    	    pasutijumaTeksts += " ar " + piedevas;
+                    	}
+
+                    	if (!izvMerce.isEmpty()) {
+                    	    pasutijumaTeksts += " + " + izvMerce;  
+                    	}
+
+                    	pasutijumaTeksts += " - €" + String.format("%.2f", cena);
+
+                    	// Pievienot sarakstam
+                    	aktiviePasutijumi.add(pasutijumaTeksts);
+
+                    	JOptionPane.showMessageDialog(this, 
+                    	    "Pasūtīts: " + pasutijumaTeksts);
                 }
             }
         });
@@ -397,4 +559,38 @@ public class Sandbox extends JFrame {
         }
         return sb.toString();
     }
+    
+    static String virknesParbaude(String zinojums, String noklusejums){
+		String virkne;
+		
+		do {
+			virkne = JOptionPane.showInputDialog(zinojums, noklusejums);
+			
+			if(virkne == null)
+				return null;
+			
+			virkne = virkne.trim();
+		}while(!Pattern.matches("^[\\p{L} .]+$", virkne));
+		
+		return virkne;
+	}
+    
+    
+    //Kaut kā atceros, ka mēs esam jau šādu pārbaudi veidojuši senāk, tikai nevaru atrast kurā uzdevumā tā bija
+    static String talrParbaude(String zinojums, String noklusejums) {
+        String talrunis;
+
+        do {
+            talrunis = JOptionPane.showInputDialog(null, zinojums, noklusejums, JOptionPane.PLAIN_MESSAGE);
+
+            if (talrunis == null)
+            	return null; 
+
+            talrunis = talrunis.trim();
+        } while (!talrunis.matches("\\d+"));
+
+        return talrunis;
+    }
+
+    
 }
