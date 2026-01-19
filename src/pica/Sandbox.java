@@ -26,6 +26,7 @@ public class Sandbox extends JFrame {
     	    setSize(400, 400); 
     	    setLocationRelativeTo(null);
     	    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    	    setResizable(false);
 
     	    setLayout(new GridLayout(8, 1, 10, 10));
 
@@ -49,7 +50,7 @@ public class Sandbox extends JFrame {
     	    add(skatitPabeigtosFailaBtn);
 
         // -------- Pasūtīt --------
-    	    pasutitBtn.addActionListener(_ -> {
+    	    pasutitBtn.addActionListener(e -> {
     	    String picasNosaukums = Pasutijums.izveliesPicasTipu();
     	    if (picasNosaukums == null) {
     	        return; 
@@ -87,8 +88,14 @@ public class Sandbox extends JFrame {
                     	}
 
                     	String vards = ParbauzuMetodes.virknesParbaude("Ievadi vārdu", "Jānis");
+                    	if(vards == null) {
+                    		return;
+                    	}
 
                     	String uzvards = ParbauzuMetodes.virknesParbaude("Ievadi uzvārdu", "Bērziņš");
+                    	if(uzvards == null) {
+                    		return;
+                    	}
 
                     	String pilnsVards = vards.trim() + " " + uzvards.trim();
 
@@ -97,6 +104,9 @@ public class Sandbox extends JFrame {
                     	    adrese = "Domino's Picērija";
                     	} else {
                     	    adrese = ParbauzuMetodes.adresesParbaude("Ievadi adresi", "Lauku iela 23");
+                    	    if(adrese == null) {
+                    	    	return;
+                    	    }
                     	}
 
                     	String talrunis = ParbauzuMetodes.talrParbaude("Ievadi tālruņa nr:", "Ievadi tālruni");
@@ -116,7 +126,7 @@ public class Sandbox extends JFrame {
 
 
 
-        apkalpotBtn.addActionListener(_ -> {
+        apkalpotBtn.addActionListener(e -> {
             if (aktiviePasutijumi.isEmpty()) {
                 JOptionPane.showMessageDialog(this, 
                     "Nav aktīvu pasūtījumu!", 
@@ -145,7 +155,7 @@ public class Sandbox extends JFrame {
         });
 
         // -------- Aktīvie pasūtījumi --------
-        aktivieBtn.addActionListener(_ -> {
+        aktivieBtn.addActionListener(e -> {
             if (aktiviePasutijumi.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Nav aktīvu pasūtījumu!");
                 return;
@@ -164,7 +174,7 @@ public class Sandbox extends JFrame {
         });
 
         // -------- Pabeigtie pasūtījumi --------
-        pabeigtieBtn.addActionListener(_ -> {
+        pabeigtieBtn.addActionListener(e -> {
             if (pabeigtiePasutijumi.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Nav pabeigtu pasūtījumu!");
                 return;
@@ -183,7 +193,7 @@ public class Sandbox extends JFrame {
         });
 
         // -------- Saglabāt aktīvos failā --------
-        saglabatAktivosBtn.addActionListener(_ -> {
+        saglabatAktivosBtn.addActionListener(e -> {
             if (aktiviePasutijumi.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Nav aktīvu pasūtījumu, ko saglabāt!");
                 return;
@@ -196,7 +206,7 @@ public class Sandbox extends JFrame {
         });
 
       
-        saglabatPabeigtosBtn.addActionListener(_ -> {
+        saglabatPabeigtosBtn.addActionListener(e -> {
             if (pabeigtiePasutijumi.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Nav pabeigtu pasūtījumu, ko saglabāt!");
                 return;
@@ -209,12 +219,12 @@ public class Sandbox extends JFrame {
         });
 
         // -------- Skatīt aktīvos no faila --------
-        skatitAktivosFailaBtn.addActionListener(_ -> {
+        skatitAktivosFailaBtn.addActionListener(e -> {
             DarbsArFailu.skatitAktivos();
         });
 
         // -------- Skatīt pabeigtos no faila --------
-        skatitPabeigtosFailaBtn.addActionListener(_ -> {
+        skatitPabeigtosFailaBtn.addActionListener(e -> {
             DarbsArFailu.skatitPabeigtos();
         });
 

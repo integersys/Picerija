@@ -168,11 +168,11 @@ public class PicasEka extends JPanel {
         centerPanel.add(new SpelesIzvele(), "speluizvele");
 
         // TAGAD drīkst listenerus
-        pateicibas.addActionListener(_ ->
+        pateicibas.addActionListener(e ->
             cardLayout.show(centerPanel, "pateicības")
         );
 
-        speluOpc.addActionListener(_ ->
+        speluOpc.addActionListener(e ->
             cardLayout.show(centerPanel, "speluizvele")
         );
 
@@ -261,6 +261,6 @@ public class PicasEka extends JPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         
-        //atskanotMuziku();
+        atskanotMuziku();
     }
     }

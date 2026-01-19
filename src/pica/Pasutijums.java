@@ -120,7 +120,7 @@ public class Pasutijums {
         piedevuPanel.add(ciliCheck);
         
         // ActionListener bildes maiņai
-        ActionListener bildesMainitajs = _ -> {
+        ActionListener bildesMainitajs = e -> {
             boolean senes = senesCheck.isSelected();
             boolean ananas = ananasCheck.isSelected();
             boolean cili = ciliCheck.isSelected();

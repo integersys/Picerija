@@ -47,7 +47,7 @@ public class SpelesIzvele extends JPanel {
         gbc.insets = new Insets(0, 0, 30, 0);
         add(sandboxDesc, gbc);
         
-        sandboxBtn.addActionListener(_ -> {
+        sandboxBtn.addActionListener(e -> {
             new Sandbox();
         });
 
