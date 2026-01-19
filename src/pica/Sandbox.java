@@ -104,54 +104,6 @@ public class Sandbox extends JFrame {
         pabeigtiePasutijumi.add(pabeigts);
     }
     
-    static String virknesParbaude(String zinojums, String noklusejums){
-        String virkne;
-        
-        do {
-            virkne = JOptionPane.showInputDialog(zinojums, noklusejums);
-            
-            if(virkne == null)
-                return null;
-            
-            virkne = virkne.trim();
-        }while(!Pattern.matches("^[\\p{L} .]+$", virkne));
-        
-        return virkne;
-    }
-    
-    static String adresesParbaude(String zinojums, String noklusejums) {
-        String virkne;
-
-        do {
-            virkne = JOptionPane.showInputDialog(zinojums, noklusejums);
-
-            if (virkne == null)
-                return null;
-
-            virkne = virkne.trim();
-        } while (!Pattern.matches("^(?=.*\\p{L})(?=.*\\d)[\\p{L}\\d .,-]+$", virkne));
-
-        return virkne;
-    }
-
-    
-    
-    static String talrParbaude(String zinojums, String noklusejums) {
-        String talrunis;
-
-        do {
-            talrunis = JOptionPane.showInputDialog(null, zinojums, noklusejums, JOptionPane.PLAIN_MESSAGE);
-
-            if (talrunis == null)
-                return null; 
-
-            talrunis = talrunis.trim();
-        } while (!talrunis.matches("\\d+"));
-
-        return talrunis;
-    }
-    
-    
     public Sandbox() {
     	    setTitle("Sandbox režīms");
     	    setSize(400, 400); 
@@ -312,187 +264,30 @@ public class Sandbox extends JFrame {
                     if (ciliCheck.isSelected()) {
                         piedevas.append("Čili, ");
                     }
+                    if (!senesCheck.isSelected()&& !ananasCheck.isSelected()&& !ciliCheck.isSelected()) {piedevas.append("Nav");
+                }
                     
                     String piedevuTeksts = piedevas.toString();
                     if (piedevuTeksts.endsWith(", ")) {
                         piedevuTeksts = piedevuTeksts.substring(0, piedevuTeksts.length() - 2);
                     }
+ 
+                    	int picasIzmers = Pasutijums.izveletiesIzm();
                     
+                    	String izvMerce = Pasutijums.izveliesMerci();
+                    	
+                    	String uzkodas = Pasutijums.izveliesUzkodas();
                    
-                    JPanel izmPanel = new JPanel(new GridLayout(1, 3, 10, 10));
+                    	String dzeriens = Pasutijums.izveliesDzerienu();
 
-                    JPanel maza = new JPanel();
-                    maza.setLayout(new BoxLayout(maza, BoxLayout.Y_AXIS));
-                    maza.add(new JLabel("12 collas"));
-                    maza.add(new JLabel("Standarta cena, nemainās"));
-                    izmPanel.add(maza);
-
-                    JPanel videja = new JPanel();
-                    videja.setLayout(new BoxLayout(videja, BoxLayout.Y_AXIS));
-                    videja.add(new JLabel("14 collas"));
-                    videja.add(new JLabel("2.50€"));
-                    izmPanel.add(videja);
-
-                    JPanel liela = new JPanel();
-                    liela.setLayout(new BoxLayout(liela, BoxLayout.Y_AXIS));
-                    liela.add(new JLabel("16 collas"));
-                    liela.add(new JLabel("5€"));
-                    izmPanel.add(liela);
-            
-                    
-
-                    String[] izmOpcijas = {"12 collas", "14 collas", "16 collas", "Atcelt"};
-
-                    int izmIzvele = JOptionPane.showOptionDialog(null, izmPanel,"Izvēlies picas izmēru",JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,izmOpcijas,izmOpcijas[1]
-                    );
-  
-                    if (izmIzvele == -1) return;
-                    
-                    int picasIzmers = 12;
-
-                    switch (izmIzvele) {
-                        case 0:
-                            break;
-                        case 1:
-                            picasIzmers = 14;
-                            break;
-                        case 2:
-                            picasIzmers = 16;
-                            break;
-                        case 3:
-                        	return;
-                    }
-                    
-                 // ====== MĒRCES IZVĒLE ======
-                    JPanel MercOpc = new JPanel(new GridLayout(1, 4, 10, 10));
-
-                    JPanel bbq = new JPanel();
-                    bbq.setLayout(new BoxLayout(bbq, BoxLayout.Y_AXIS));
-                    bbq.add(new JLabel("Barbekjū mērce"));
-                    bbq.add(new JLabel("1.50€"));
-                    MercOpc.add(bbq);  
-
-                    JPanel kip = new JPanel();
-                    kip.setLayout(new BoxLayout(kip, BoxLayout.Y_AXIS));
-                    kip.add(new JLabel("Ķiploku mērce"));
-                    kip.add(new JLabel("1.50€"));
-                    MercOpc.add(kip); 
-
-                    JPanel choc = new JPanel();
-                    choc.setLayout(new BoxLayout(choc, BoxLayout.Y_AXIS));
-                    choc.add(new JLabel("Šokolādes mērce"));
-                    choc.add(new JLabel("2.50€"));
-                    MercOpc.add(choc);
-
-                    JPanel neko = new JPanel();
-                    neko.setLayout(new BoxLayout(neko, BoxLayout.Y_AXIS));
-                    neko.add(new JLabel("Nevēlos"));
-                    MercOpc.add(neko);  
-
-                    String[] MercesOpc = {"Barbekjū mērce","Ķiploku mērce","Šokolādes mērce", "Nevēlos"
-                    };
-
-                    int mercuIzvele = JOptionPane.showOptionDialog(null, MercOpc, "Izvēlies mērci",JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,MercesOpc, MercesOpc[3]
-                    );
-
-                    	// Pēc mērces izvēles
-                    	if (mercuIzvele == -1) return;
-
-                    	String izvMerce = "";
-                    	switch (mercuIzvele) {
-                    	    case 0: 
-                    	        izvMerce = "Barbekjū mērce";
-                    	        break;
-                    	    case 1: 
-                    	        izvMerce = "Ķiploku mērce";
-                    	        break;
-                    	    case 2: 
-                    	        izvMerce = "Šokolādes mērce";
-                    	        break;
-                    	    case 3: 
-                    	        izvMerce = "Bez mērces";
-                    	        break;
-                    	}
-                    	
-                    	String uzkodas = "";
-
-                    	// ====== UZKODU IZVĒLE ======
-                    	if (!izvMerce.equals("Bez mērces")) {
-                    	    String[] uzkoduOpcijas = {
-                    	        "Kartupeļi (+2.00€)",
-                    	        "Siera nūjiņas (+3.00€)",
-                    	        "Vistas spārniņi (+4.50€)",
-                    	        "Nevēlos uzkodas"
-                    	    };
-                    	    
-                    	    String izveletaUzkoda = (String) JOptionPane.showInputDialog(
-                    	        null,
-                    	        "Izvēlies uzkodu",
-                    	        "Uzkodu izvēle",
-                    	        JOptionPane.QUESTION_MESSAGE,
-                    	        null,
-                    	        uzkoduOpcijas,
-                    	        uzkoduOpcijas[3]
-                    	    );
-                    	    
-                    	    if (izveletaUzkoda == null) return;
-                    	    
-                    	    if (izveletaUzkoda.contains("Kartupeļi")) {
-                    	        uzkodas = " Kartupeļi";
-                    	    } else if (izveletaUzkoda.contains("Siera")) {
-                    	        uzkodas = " Siera nūjiņas";
-                    	    } else if (izveletaUzkoda.contains("Vistas")) {
-                    	        uzkodas = " Vistas spārniņi";
-                    	    }else {
-                    	    	uzkodas = "Nav";
-                    	    }
-                    	}
-
-                    	String[] dzerienuOpcijas = { "Cola 0.5L (+2.00€)","Fanta 0.5L (+2.00€)","Ūdens 0.5L (+1.50€)","Enerģijas dzēriens (+3.50€)","Nevēlos dzērienu"
-                    	};
-
-                    	String dzeriens = (String) JOptionPane.showInputDialog(null, "Izvēlies dzērienu","Dzērienu izvēle",JOptionPane.QUESTION_MESSAGE,null,dzerienuOpcijas,dzerienuOpcijas[4]
-                    	);
-
-                    	if (dzeriens == null) 
-                    		return;
-
-                    	if (dzeriens.contains("Cola")) {
-                    		dzeriens = "Cola 0.5L";
-                    	} else if (dzeriens.contains("Fanta")) {
-                    		dzeriens = "Fanta 0.5L";
-                    	} else if (dzeriens.contains("Ūdens")) {
-                    		dzeriens = "Ūdens 0.5L";
-                    	} else if (dzeriens.contains("Enerģijas")) {
-                    		dzeriens = "Enerģijas dzēriens";
-                    	} else {
-                    		dzeriens = "Nav";
-                    	}
-
-                    	String[] izvopcijas = {"Jā", "Nē"};
-
-                    	int uzVietasIzvele = JOptionPane.showOptionDialog(
-                    	    null,
-                    	    "Vai savākt uz vietas?\nCitādāk, piegāde uz adresi maksā 3 €",
-                    	    "Piegādes veids",
-                    	    JOptionPane.DEFAULT_OPTION,
-                    	    JOptionPane.QUESTION_MESSAGE,
-                    	    null,
-                    	    izvopcijas,
-                    	    izvopcijas[0]
-                    	);
-                    	
-                    	if(uzVietasIzvele == -1) {
-                    		return;
-                    	}
-
-                    	boolean savakt = (uzVietasIzvele == 0);                    	
+	
+                    	boolean savakt = Pasutijums.izveliesPiegadi();                	
 
 
                    
-                    	String vards = virknesParbaude("Ievadi vārdu", "Jānis");
+                    	String vards = ParbauzuMetodes.virknesParbaude("Ievadi vārdu", "Jānis");
 
-                    	String uzvards = virknesParbaude("Ievadi uzvārdu", "Bērziņš");
+                    	String uzvards = ParbauzuMetodes.virknesParbaude("Ievadi uzvārdu", "Bērziņš");
 
                     	String pilnsVards = vards.trim() + " " + uzvards.trim();
 
@@ -500,10 +295,10 @@ public class Sandbox extends JFrame {
                     	if (savakt) {
                     	    adrese = "Domino's Picērija";
                     	} else {
-                    	    adrese = adresesParbaude("Ievadi adresi", "Lauku iela 23");
+                    	    adrese = ParbauzuMetodes.adresesParbaude("Ievadi adresi", "Lauku iela 23");
                     	}
 
-                    	String talrunis = talrParbaude("Ievadi tālruņa nr:", "Ievadi tālruni");
+                    	String talrunis = ParbauzuMetodes.talrParbaude("Ievadi tālruņa nr:", "Ievadi tālruni");
                     	if (talrunis == null || talrunis.trim().isEmpty()) return;
                     	
                     	double galaCena = Pasutijums.aprekinatCenu(picasNosaukums,piedevuTeksts,picasIzmers,izvMerce,uzkodas,dzeriens, savakt);
@@ -534,16 +329,23 @@ public class Sandbox extends JFrame {
 
             Pasutijums nakamais = aktiviePasutijumi.peek();  
 
-            int choice = JOptionPane.showConfirmDialog(null,"Nākamais pasūtījums:\n\n" + nakamais.toString() + "\n\nVai atzīmēt kā pabeigtu?","Apkalpot pasūtījumu",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE
+            String[] jaNeOpcijas = {"Jā", "Nē"};
+
+            int izvele = JOptionPane.showOptionDialog(null,"Nākamais pasūtījums:\n\n" + nakamais.toString() +"\n\nVai atzīmēt šo pasūtījumu kā pabeigtu?","Apkalpot pasūtījumu",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null,jaNeOpcijas,jaNeOpcijas[0]
             );
 
-            if (choice == JOptionPane.YES_OPTION) {
-                pabeigtPasutijumu();
-                JOptionPane.showMessageDialog(this, 
-                    "Pasūtījums pabeigts!", 
-                    "Veiksmīgi", 
-                    JOptionPane.INFORMATION_MESSAGE);
+            if (izvele == -1) {
+            	return;
             }
+            
+            if (izvele == 0) { 
+                pabeigtPasutijumu();
+                JOptionPane.showMessageDialog(null,"Pasūtījums pabeigts!","Veiksmīgi",JOptionPane.INFORMATION_MESSAGE
+                );
+            }else {
+            	return;
+            }
+
         });
 
         // -------- Aktīvie pasūtījumi --------
